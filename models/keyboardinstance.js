@@ -10,11 +10,16 @@ const KeyboardInstanceSchema = new Schema({
     enum: ['In-stock', 'Sold', 'Returned'],
     default: 'In-stock',
   },
+  keyboard_switch: {
+    type: Schema.Types.ObjectId,
+    ref: 'KeyboardSwitch',
+    required: true,
+  },
   date_sold: { type: Date, default: Date.now },
 });
 
 KeyboardInstanceSchema.virtual('url').get(function () {
-  return `/inventory/keyboardinstance/${this._id}`;
+  return `/inventory/instance/${this._id}`;
 });
 
 // Export model
