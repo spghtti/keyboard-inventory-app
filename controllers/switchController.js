@@ -1,4 +1,6 @@
 const KeyboardSwitch = require('../models/keyboardswitch');
+const KeyboardInstance = require('../models/keyboardinstance');
+const async = require('async');
 
 // Display list of all Keyboardswitch.
 exports.keyboardswitch_list = (req, res) => {
@@ -17,8 +19,37 @@ exports.keyboardswitch_list = (req, res) => {
 };
 
 // Display detail page for a specific Keyboardswitch.
-exports.keyboardswitch_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Keyboardswitch detail: ${req.params.id}`);
+exports.keyboardswitch_detail = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard_switch(callback) {
+        KeyboardSwitch.findById(req.params.id).exec(callback);
+      },
+
+      switch_instances(callback) {
+        KeyboardInstance.find({ keyboard_switch: req.params.id }).exec(
+          callback
+        );
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard_switch == null) {
+        // No results.
+        const err = new Error('Switch not found');
+        err.status = 404;
+        return next(err);
+      }
+      // Successful, so render
+      res.render('switch_detail', {
+        title: 'Switch Detail',
+        keyboard_switch: results.keyboard_switch,
+        switch_instances: results.switch_instances,
+      });
+    }
+  );
 };
 
 // Display Keyboardswitch create form on GET.
