@@ -66,97 +66,91 @@ router.get('/brands', brand_controller.brand_list);
 
 // GET request for creating a Genre. NOTE This must come before route that displays Genre (uses id).
 router.get(
-  '/keyboardswitch/create',
+  '/switch/create',
   keyboardswitch_controller.keyboardswitch_create_get
 );
 
 //POST request for creating Genre.
 router.post(
-  '/keyboardswitch/create',
+  '/switch/create',
   keyboardswitch_controller.keyboardswitch_create_post
 );
 
 // GET request to delete Genre.
 router.get(
-  '/keyboardswitch/:id/delete',
+  '/switch/:id/delete',
   keyboardswitch_controller.keyboardswitch_delete_get
 );
 
 // POST request to delete Genre.
 router.post(
-  '/keyboardswitch/:id/delete',
+  '/switch/:id/delete',
   keyboardswitch_controller.keyboardswitch_delete_post
 );
 
 // GET request to update Genre.
 router.get(
-  '/keyboardswitch/:id/update',
+  '/switch/:id/update',
   keyboardswitch_controller.keyboardswitch_update_get
 );
 
 // POST request to update Genre.
 router.post(
-  '/keyboardswitch/:id/update',
+  '/switch/:id/update',
   keyboardswitch_controller.keyboardswitch_update_post
 );
 
 // GET request for one Genre.
-router.get(
-  '/keyboardswitch/:id',
-  keyboardswitch_controller.keyboardswitch_detail
-);
+router.get('/switch/:id', keyboardswitch_controller.keyboardswitch_detail);
 
 // GET request for list of all Genre.
-router.get('/keyboardswitchs', keyboardswitch_controller.keyboardswitch_list);
+router.get('/switches', keyboardswitch_controller.keyboardswitch_list);
 
 /// BOOKINSTANCE ROUTES ///
 
 // GET request for creating a BookInstance. NOTE This must come before route that displays BookInstance (uses id).
 router.get(
-  '/keyboardinstance/create',
+  '/instance/create',
   keyboard_instance_controller.keyboardinstance_create_get
 );
 
 // POST request for creating BookInstance.
 router.post(
-  '/keyboardinstance/create',
+  '/instance/create',
   keyboard_instance_controller.keyboardinstance_create_post
 );
 
 // GET request to delete BookInstance.
 router.get(
-  '/keyboardinstance/:id/delete',
+  '/instance/:id/delete',
   keyboard_instance_controller.keyboardinstance_delete_get
 );
 
 // POST request to delete BookInstance.
 router.post(
-  '/keyboardinstance/:id/delete',
+  '/instance/:id/delete',
   keyboard_instance_controller.keyboardinstance_delete_post
 );
 
 // GET request to update BookInstance.
 router.get(
-  '/keyboardinstance/:id/update',
+  '/instance/:id/update',
   keyboard_instance_controller.keyboardinstance_update_get
 );
 
 // POST request to update BookInstance.
 router.post(
-  '/keyboardinstance/:id/update',
+  '/instance/:id/update',
   keyboard_instance_controller.keyboardinstance_update_post
 );
 
 // GET request for one BookInstance.
 router.get(
-  '/keyboardinstance/:id',
+  '/instance/:id',
   keyboard_instance_controller.keyboardinstance_detail
 );
 
 // GET request for list of all BookInstance.
-router.get(
-  '/keyboardinstances',
-  keyboard_instance_controller.keyboardinstance_list
-);
+router.get('/instances', keyboard_instance_controller.keyboardinstance_list);
 
 module.exports = router;

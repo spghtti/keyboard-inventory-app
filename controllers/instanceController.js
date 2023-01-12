@@ -2,7 +2,27 @@ const KeyboardInstance = require('../models/keyboardinstance');
 
 // Display list of all Keyboardinstances.
 exports.keyboardinstance_list = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardinstance list');
+  KeyboardInstance.find()
+    .populate({
+      path: 'keyboard',
+      model: 'Keyboard',
+      populate: [
+        {
+          path: 'brand',
+          model: 'Brand',
+        },
+      ],
+    })
+    .exec(function (err, list_keyboardinstances) {
+      if (err) {
+        return next(err);
+      }
+      // Successful, so render
+      res.render('instance_list', {
+        title: 'Keyboard Instance List',
+        keyboardinstance_list: list_keyboardinstances,
+      });
+    });
 };
 
 // Display detail page for a specific Keyboardinstance.

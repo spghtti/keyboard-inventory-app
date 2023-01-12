@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { DateTime } = require('luxon');
 
 const Schema = mongoose.Schema;
 
@@ -20,6 +21,10 @@ const KeyboardInstanceSchema = new Schema({
 
 KeyboardInstanceSchema.virtual('url').get(function () {
   return `/inventory/instance/${this._id}`;
+});
+
+KeyboardInstanceSchema.virtual('date_sold_formatted').get(function () {
+  return DateTime.fromJSDate(this.date_sold).toLocaleString(DateTime.DATE_MED);
 });
 
 // Export model

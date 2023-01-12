@@ -1,11 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= title %></title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/reset.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="shortcut icon" href="#" />
+    <title><%= title %></title>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <%- include('sidebar') -%>
+    <div class="wrapper">
+      <div>
+        <h1><%= title %></h1>
+        <p>
+          This is a basic Mongo CRUD app for a fake store selling keyboards/
+          Below, you'll find a dynamic count of what's in stock.
+        </p>
+      </div>
+      <% if(error){ %>
+      <p style="color: red">Error getting data</p>
+      <% } else{ %>
+      <h2>Current inventory:</h2>
+      <ul>
+        <li>Keyboards: <%= data.keyboard_count %></li>
+        <li>Instances: <%= data.keyboard_instance_count %></li>
+        <li>In-stock: <%= data.keyboard_instance_available_count %></li>
+        <li>Brands: <%= data.brand_count %></li>
+        <li>Switches: <%= data.switch_count %></li>
+      </ul>
+
+      <% } %>
+    </div>
   </body>
 </html>
