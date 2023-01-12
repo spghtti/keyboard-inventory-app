@@ -2,7 +2,18 @@ const KeyboardSwitch = require('../models/keyboardswitch');
 
 // Display list of all Keyboardswitch.
 exports.keyboardswitch_list = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardswitch list');
+  KeyboardSwitch.find()
+    .sort([['name', 'ascending']])
+    .exec(function (err, list_switches) {
+      if (err) {
+        return next(err);
+      }
+      //Successful, so render
+      res.render('switch_list', {
+        title: 'Switch List',
+        switch_list: list_switches,
+      });
+    });
 };
 
 // Display detail page for a specific Keyboardswitch.

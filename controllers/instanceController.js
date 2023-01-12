@@ -1,7 +1,7 @@
 const KeyboardInstance = require('../models/keyboardinstance');
 
 // Display list of all Keyboardinstances.
-exports.keyboardinstance_list = (req, res) => {
+exports.keyboardinstance_list = (req, res, next) => {
   KeyboardInstance.find()
     .populate({
       path: 'keyboard',

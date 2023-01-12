@@ -35,7 +35,7 @@ exports.index = (req, res) => {
 };
 
 // Display list of all keyboards.
-exports.keyboard_list = (req, res) => {
+exports.keyboard_list = (req, res, next) => {
   Keyboard.find({}, 'name brand')
     .sort({ name: 1 })
     .populate('brand')
