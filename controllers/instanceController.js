@@ -26,8 +26,25 @@ exports.keyboardinstance_list = (req, res, next) => {
 };
 
 // Display detail page for a specific Keyboardinstance.
-exports.keyboardinstance_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Keyboardinstance detail: ${req.params.id}`);
+exports.keyboardinstance_detail = (req, res, next) => {
+  KeyboardInstance.findById(req.params.id)
+    .populate('keyboard')
+    .exec((err, keyboardinstance) => {
+      if (err) {
+        return next(err);
+      }
+      if (keyboardinstance == null) {
+        // No results.
+        const err = new Error('Instance not found');
+        err.status = 404;
+        return next(err);
+      }
+      // Successful, so render.
+      res.render('instance_detail', {
+        title: `Keyboard: ${keyboardinstance.keyboard.name}`,
+        keyboardinstance,
+      });
+    });
 };
 
 // Display Keyboardinstance create form on GET.

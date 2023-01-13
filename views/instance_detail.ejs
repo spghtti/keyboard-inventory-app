@@ -10,26 +10,18 @@
   <link rel="shortcut icon" href="#" />
   <title><%= title %></title>
 </head>
-
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div>
-      <h1><%= keyboard.brand.name %> <%= keyboard.name %></h1>
-    </div>
-    <div>
-      <% if(keyboard.description){ %>
-      <p><%= keyboard.description %></p>
-      <% } %>
+      <h1>ID: <%=keyboardinstance._id %></h1>
     </div>
     <ul>
-      <% if(!keyboard_instances){ %>
-      <p>These keyboards aren't available currently.</p>
-      <% } else{ %> <% keyboard_instances.forEach((instance) => { %>
-      <li>
-        <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
+     <li><a href="<%= keyboardinstance.keyboard.url %>"><%= keyboardinstance.keyboard.name %></a></li>
+      <li><p>Status: <%= keyboardinstance.status  %> </p>
       </li>
-      <% }); %> <% } %>
+      <li><p>Date sold: <%= keyboardinstance.date_sold ? keyboardinstance.date_sold_formatted : 'N/A' %>
+      </li>
     </ul>
   </div>
 </body>

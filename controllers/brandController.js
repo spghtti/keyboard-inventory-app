@@ -1,4 +1,6 @@
 const Brand = require('../models/brand');
+const Keyboard = require('../models/keyboard');
+const async = require('async');
 
 // Display list of all Brand.
 exports.brand_list = (req, res, next) => {
@@ -17,8 +19,37 @@ exports.brand_list = (req, res, next) => {
 };
 
 // Display detail page for a specific Brand.
-exports.brand_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Brand detail: ${req.params.id}`);
+exports.brand_detail = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback);
+      },
+      brand_keyboards(callback) {
+        Keyboard.find({ author: req.params.id }, 'name description').exec(
+          callback
+        );
+      },
+    },
+    (err, results) => {
+      if (err) {
+        // Error in API usage.
+        return next(err);
+      }
+      if (results.brand == null) {
+        // No results.
+        const err = new Error('Brand not found');
+        err.status = 404;
+        return next(err);
+      }
+      // Successful, so render.
+      res.render('brand_detail', {
+        title: 'Brand',
+        brand: results.brand,
+        brand_keyboards: results.brand_keyboards,
+      });
+    }
+  );
 };
 
 // Display Brand create form on GET.

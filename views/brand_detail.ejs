@@ -15,19 +15,20 @@
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div>
-      <h1><%= keyboard.brand.name %> <%= keyboard.name %></h1>
+      <h1><%=brand.name %></h1>
     </div>
     <div>
-      <% if(keyboard.description){ %>
-      <p><%= keyboard.description %></p>
+      <% if(brand.description){ %>
+      <p><%= brand.description %></p>
       <% } %>
     </div>
     <ul>
-      <% if(!keyboard_instances){ %>
-      <p>These keyboards aren't available currently.</p>
-      <% } else{ %> <% keyboard_instances.forEach((instance) => { %>
+      <% if(!brand_keyboards){ %>
+      <p>This brand doesn't have any keyboards.</p>
+      <% } else{ %> <% brand_keyboards.forEach((keyboard) => { %>
       <li>
-        <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
+        <a href="<%= keyboard.url %>"> <%= keyboard.name %></a>
+        <p><%= keyboard.description !== 'false' ? keyboard.description : 'No description' %></p>
       </li>
       <% }); %> <% } %>
     </ul>
