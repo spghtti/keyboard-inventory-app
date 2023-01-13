@@ -27,9 +27,18 @@ exports.keyboardswitch_detail = (req, res, next) => {
       },
 
       switch_instances(callback) {
-        KeyboardInstance.find({ keyboard_switch: req.params.id }).exec(
-          callback
-        );
+        KeyboardInstance.find({ keyboard_switch: req.params.id })
+          .populate({
+            path: 'keyboard',
+            model: 'Keyboard',
+            populate: [
+              {
+                path: 'brand',
+                model: 'Brand',
+              },
+            ],
+          })
+          .exec(callback);
       },
     },
     (err, results) => {
@@ -42,6 +51,13 @@ exports.keyboardswitch_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+      if (results.switch_instances == null) {
+        // No results.
+        const err = new Error('Switch Instances not found');
+        err.status = 404;
+        return next(err);
+      }
+      console.log(results);
       // Successful, so render
       res.render('switch_detail', {
         title: 'Switch Detail',

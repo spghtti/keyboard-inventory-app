@@ -52,8 +52,37 @@ exports.keyboard_list = (req, res, next) => {
 };
 
 // Display detail page for a specific keyboard.
-exports.keyboard_detail = (req, res) => {
-  res.send(`NOT IMPLEMENTED: Keyboard detail: ${req.params.id}`);
+exports.keyboard_detail = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard(callback) {
+        Keyboard.findById(req.params.id).populate('brand').exec(callback);
+      },
+      keyboard_instances(callback) {
+        KeyboardInstance.find({ keyboard: req.params.id })
+          .populate('keyboard')
+          .populate('keyboard_switch')
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard == null) {
+        // No results.
+        const err = new Error('Keyboard not found');
+        err.status = 404;
+        return next(err);
+      }
+      // Successful, so render.
+      res.render('keyboard_detail', {
+        title: results.keyboard.name,
+        keyboard: results.keyboard,
+        keyboard_instances: results.keyboard_instances,
+      });
+    }
+  );
 };
 
 // Display keyboard create form on GET.
