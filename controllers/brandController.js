@@ -26,7 +26,7 @@ exports.brand_detail = (req, res, next) => {
         Brand.findById(req.params.id).exec(callback);
       },
       brand_keyboards(callback) {
-        Keyboard.find({ author: req.params.id }, 'name description').exec(
+        Keyboard.find({ brand: req.params.id }, 'name description').exec(
           callback
         );
       },
