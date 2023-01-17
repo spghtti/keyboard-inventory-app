@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/stylesheets/reset.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="shortcut icon" href="#" />
+  <title><%= title %></title>
+</head>
+
+<body>
+  <%- include('sidebar') -%>
+  <div class="wrapper">
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="name">Switch:</label>
+            <input type="text" id="name" class="form-control" name="name" value="<%= keyboard_switch === undefined ? '' : keyboard_switch.name %>" >
+            <label for="description">Description:</label>
+            <textarea type="text" id="description" class="form-control" name="description" value="<%= keyboard_switch === undefined ? '' : keyboard_switch.description %>" ></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <% if(errors) { %>
+            <ul>
+                <% errors.forEach((error) => { %>
+                    <li><%= error.msg %></li>
+                    <% }); %>
+            </ul> 
+            <% } %>
+    </form>
+  </div>
+</body>
+
+</html>

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const KeyboardSwitchSchema = new Schema({
   name: { type: String, required: true, minLength: 3, maxLength: 100 },
-  description: { type: String, minLength: 3 },
+  description: { type: String },
 });
 
 KeyboardSwitchSchema.virtual('url').get(function () {
