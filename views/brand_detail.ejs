@@ -18,8 +18,8 @@
       <h1><%=brand.name %></h1>
     </div>
     <div>
-      <% if(brand.description){ %>
-      <p><%= brand.description %></p>
+      <% if(brand.origin !== 'false'){ %>
+      <p><%= brand.origin %></p>
       <% } %>
     </div>
     <ul>
