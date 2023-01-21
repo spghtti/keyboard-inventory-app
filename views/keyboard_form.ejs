@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/stylesheets/reset.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="shortcut icon" href="#" />
+  <title><%= title %></title>
+</head>
+
+<body>
+  <%- include('sidebar') -%>
+  <div class="wrapper">
+    <h1><%= title %></h1>
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" class="form-control" name="name" value="<%= locals.keyboard === undefined ? '' : keyboard.name %>" >
+            <label for="brand">Brand:</label>
+            <select id="brand" class="form-control" name="brand" placeholder='Select a brand' required="true" autocomplete="off">
+            <% brands.forEach((brand) => {  %>
+                <% if (locals.keyboard) { %> 
+                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> " ><%= brand.name %> </option> 
+                <% } else { %>
+                    <option value="<%= brand._id %> "><%= brand.name %></option> 
+                    <% } %>
+                <% })  %>
+        </select>
+            <label for="description">Description:</label>
+            <textarea type="text" id="description" class="form-control" name="description" value="<%= locals.keyboard === undefined ? '' : locals.keyboard.description %>"></textarea>
+            <label for="price">Price</label>
+            <input type="number" id="price" class="form-control" name="price" value="<%= locals.keyboard === undefined ? '' : locals.keyboard.price %>">
+            <label for="switches">Switches:</label>
+            <div>
+            <% switches.forEach((keyboard_switch) => {  %>
+              <div style="display: inline;">
+              <input type="checkbox" class="checkbox-input" name="switches" id="<%= keyboard_switch._id %>" value="<%= keyboard_switch._id %>" <%= keyboard_switch.checked %> >
+              <label for="<%= keyboard_switch._id %>"><%= keyboard_switch.name %></label>
+              </div>
+                <% })  %>
+        </select>
+      </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <% if( locals.errors) { %>
+            <ul>
+                <% errors.forEach((error) => { %>
+                    <li><%= error.msg %></li>
+                    <% }); %>
+            </ul> 
+            <% } %>
+    </form>
+  </div>
+</body>
+
+</html>

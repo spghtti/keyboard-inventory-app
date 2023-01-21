@@ -5,6 +5,8 @@ const Switch = require('../models/keyboardswitch');
 
 const async = require('async');
 
+const { body, validationResult } = require('express-validator');
+
 exports.index = (req, res) => {
   async.parallel(
     {
@@ -86,14 +88,120 @@ exports.keyboard_detail = (req, res, next) => {
 };
 
 // Display keyboard create form on GET.
-exports.keyboard_create_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboard create GET');
+exports.keyboard_create_get = (req, res, next) => {
+  // Get all brands and switches, which we can use for adding to our book.
+  async.parallel(
+    {
+      brands(callback) {
+        Brand.find(callback);
+      },
+      switches(callback) {
+        Switch.find(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      res.render('keyboard_form', {
+        title: 'Create New Keyboard',
+        brands: results.brands,
+        switches: results.switches,
+      });
+    }
+  );
 };
 
 // Handle keyboard create on POST.
-exports.keyboard_create_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboard create POST');
-};
+exports.keyboard_create_post = [
+  // Convert the switches to an array.
+  (req, res, next) => {
+    console.log(req.body);
+
+    if (!Array.isArray(req.body.switches)) {
+      req.body.switches =
+        typeof req.body.switches === 'undefined' ? [] : [req.body.switches];
+    }
+    next();
+  },
+  // Validate and sanitize fields.
+  body('name', 'Name must be at least 3 characters.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('brand', 'Brand name must not be empty.')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('description', 'Description must not be empty.').trim().escape(),
+  body('price', 'Please fill out a price')
+    .trim()
+    .isInt()
+    .withMessage('Price should be a number')
+    .isLength({ min: 1 })
+    .escape(),
+  body('switches.*').escape(),
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Keyboard object with escaped and trimmed data.
+    const keyboard = new Keyboard({
+      name: req.body.name,
+      brand: req.body.brand,
+      description: req.body.description,
+      switches: req.body.switches,
+      price: req.body.price,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all brands and switches for form.
+      async.parallel(
+        {
+          brands(callback) {
+            Brand.find(callback);
+          },
+          switches(callback) {
+            Switch.find(callback);
+          },
+        },
+        (err, results) => {
+          if (err) {
+            return next(err);
+          }
+
+          // Mark our selected switch as checked.
+          for (const keyboard_switch of results.switches) {
+            if (keyboard.switches.includes(keyboard_switch._id)) {
+              keyboard_switch.checked = 'checked';
+            }
+          }
+          console.log(results.switches.checked);
+          res.render('keyboard_form', {
+            title: 'Create New Keyboard',
+            brands: results.brands,
+            switches: results.switches,
+            keyboard,
+            errors: errors.array(),
+          });
+        }
+      );
+      return;
+    }
+
+    // Data from form is valid. Save book.
+    keyboard.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      // Successful: redirect to new book record.
+      res.redirect(keyboard.url);
+    });
+  },
+];
 
 // Display keyboard delete form on GET.
 exports.keyboard_delete_get = (req, res) => {
