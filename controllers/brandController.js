@@ -56,10 +56,7 @@ exports.brand_detail = (req, res, next) => {
 
 // Display Brand create form on GET.
 exports.brand_create_get = (req, res, next) => {
-  const errors = '';
-  const brand = '';
-
-  res.render('brand_form', { title: 'Create New Brand', errors, brand });
+  res.render('brand_form', { title: 'Create New Brand' });
 };
 
 // Handle Brand create on POST.
@@ -80,7 +77,7 @@ exports.brand_create_post = [
       // There are errors. Render form again with sanitized values/errors messages.
       res.render('brand_form', {
         title: 'Create New Brand',
-        brand: req.brand,
+        brand: req.body,
         errors: errors.array(),
       });
       return;

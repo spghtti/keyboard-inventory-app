@@ -72,13 +72,8 @@ exports.keyboardswitch_detail = (req, res, next) => {
 
 // Display Keyboardswitch create form on GET.
 exports.keyboardswitch_create_get = (req, res, next) => {
-  const errors = '';
-  const keyboard_switch = '';
-
   res.render('switch_form', {
     title: 'Create New Switch',
-    errors,
-    keyboard_switch,
   });
 };
 
