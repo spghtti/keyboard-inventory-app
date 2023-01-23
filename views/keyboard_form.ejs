@@ -23,9 +23,9 @@
             <select id="brand" class="form-control" name="brand" placeholder='Select a brand' required="true" autocomplete="off">
             <% brands.forEach((brand) => {  %>
                 <% if (locals.keyboard) { %> 
-                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> " ><%= brand.name %> </option> 
+                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> " ><%= brand.display_name %> </option> 
                 <% } else { %>
-                    <option value="<%= brand._id %> "><%= brand.name %></option> 
+                    <option value="<%= brand._id %> "><%= brand.display_name %></option> 
                     <% } %>
                 <% })  %>
         </select>
@@ -38,7 +38,7 @@
             <% switches.forEach((keyboard_switch) => {  %>
               <div style="display: inline;">
               <input type="checkbox" class="checkbox-input" name="switches" id="<%= keyboard_switch._id %>" value="<%= keyboard_switch._id %>" <%= keyboard_switch.checked %> >
-              <label for="<%= keyboard_switch._id %>"><%= keyboard_switch.name %></label>
+              <label for="<%= keyboard_switch._id %>"><%= keyboard_switch.display_name %></label>
               </div>
                 <% })  %>
         </select>

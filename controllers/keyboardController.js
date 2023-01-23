@@ -58,7 +58,10 @@ exports.keyboard_detail = (req, res, next) => {
   async.parallel(
     {
       keyboard(callback) {
-        Keyboard.findById(req.params.id).populate('brand').exec(callback);
+        Keyboard.findById(req.params.id)
+          .populate('brand')
+          .populate('switches')
+          .exec(callback);
       },
       keyboard_instances(callback) {
         KeyboardInstance.find({ keyboard: req.params.id })
@@ -77,6 +80,7 @@ exports.keyboard_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+      console.log(results.keyboard);
       // Successful, so render.
       res.render('keyboard_detail', {
         title: results.keyboard.name,

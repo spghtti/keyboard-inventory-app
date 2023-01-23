@@ -31,8 +31,8 @@ var keyboards = [];
 var keyboardinstances = [];
 var keyboardswitches = [];
 
-function brandCreate(name, origin, cb) {
-  branddetail = { name, origin };
+function brandCreate(name, display_name, origin, cb) {
+  branddetail = { name, display_name, origin };
   if (origin != false) branddetail.origin = origin;
 
   var brand = new Brand(branddetail);
@@ -48,8 +48,8 @@ function brandCreate(name, origin, cb) {
   });
 }
 
-function switchCreate(name, description, cb) {
-  switchDetail = { name };
+function switchCreate(name, display_name, description, cb) {
+  switchDetail = { name, display_name };
 
   if (description != false) switchDetail.description = description;
 
@@ -66,12 +66,13 @@ function switchCreate(name, description, cb) {
   });
 }
 
-function keyboardCreate(name, brand, description, price, cb) {
+function keyboardCreate(name, brand, description, price, switches, cb) {
   keyboarddetail = {
     name,
     brand,
     description,
     price,
+    switches,
   };
   if (description != false) keyboarddetail.description = description;
 
@@ -119,19 +120,20 @@ function createSwitchesBrands(cb) {
   async.series(
     [
       function (callback) {
-        brandCreate('Ducky', 'United States', callback);
+        brandCreate('ducky', 'Ducky', 'United States', callback);
       },
       function (callback) {
-        brandCreate('HHKB', false, callback);
+        brandCreate('hhkb', 'HHKB', false, callback);
       },
       function (callback) {
-        brandCreate('Leopold', 'Korea', callback);
+        brandCreate('leopold', 'Leopold', 'Korea', callback);
       },
       function (callback) {
-        brandCreate('Vortex', 'Taiwan', callback);
+        brandCreate('vortex', 'Vortex', 'Taiwan', callback);
       },
       function (callback) {
         switchCreate(
+          'topre',
           'Topre',
           'Topre switches are an electro-capacitive switch that actuates via the Hall effect. Topre switches have the feel of a rubber dome but add in the nice aspects of mechanical keyboards as well. They have a nice “thonk” sound and satisfying tactile feedback. Topre is an awesome alternative to mechanical switches if you enjoy a slightly different feel, although you have to pay quite a bit more for Topre switches',
           callback
@@ -140,12 +142,13 @@ function createSwitchesBrands(cb) {
       function (callback) {
         switchCreate(
           'Cherry MX Red',
+          'cherry mx red',
           'The linear switching characteristic combined with the low spring resistance triggers directly. The CHERRY MX Red is the first choice for beginners in the world of mechanical keyboards. The smooth-running CHERRY MX technology enables balanced writing and gaming sessions.',
           callback
         );
       },
       function (callback) {
-        switchCreate('Cherry MX Blue', false, callback);
+        switchCreate('Cherry MX Blue', 'cherry mx blue', false, callback);
       },
     ],
     // optional callback
@@ -162,6 +165,7 @@ function createKeyboards(cb) {
           brands[0],
           'Featuring PBT double shot seamless keycaps with side laser engraving technique. Smaller size, but no functions sacrificed. Supports Ducky Macro V2.0 and Mouse control function. The new bezel design shares a similar sleek frame as its predecessor, but the One 2 Mini incorporates dual colors on the bezel to match all varieties of keycap colorways.',
           130,
+          [keyboardswitches[0], keyboardswitches[1]],
           callback
         );
       },
@@ -171,11 +175,19 @@ function createKeyboards(cb) {
           brands[1],
           'Designed by programmers for programmers to improve speed, accuracy and reduce hand and finger fatigue -hand never need to leave the home row.',
           145,
+          [keyboardswitches[0], keyboardswitches[2]],
           callback
         );
       },
       function (callback) {
-        keyboardCreate('FC750R', brands[2], false, 153, callback);
+        keyboardCreate(
+          'FC750R',
+          brands[2],
+          false,
+          153,
+          [keyboardswitches[1], keyboardswitches[2]],
+          callback
+        );
       },
       function (callback) {
         keyboardCreate(
@@ -183,6 +195,7 @@ function createKeyboards(cb) {
           brands[2],
           "Vortex's newest 75% keyboard, the 83-key Race 3! Do you need dedicated arrow keys that your 60% doesn't provide, but don't want the size of a TKL? A 75% may be just for you! Most of the keys are in the \"normal\" spot, so there's nearly no learning curve for this keyboard.",
           110,
+          [keyboardswitches[0]],
           callback
         );
       },
@@ -192,11 +205,19 @@ function createKeyboards(cb) {
           brands[1],
           'The HHKB Hybrid Type-S comes with full key map customization software as well as 6 DIP switches to customize user experience. Includes 3 adjustable keyboard heights for optimum comfort..',
           137,
+          [keyboardswitches[0]],
           callback
         );
       },
       function (callback) {
-        keyboardCreate('Test Keyboard 1', brands[1], false, 99, callback);
+        keyboardCreate(
+          'Test Keyboard 1',
+          brands[1],
+          false,
+          99,
+          [keyboardswitches[1], keyboardswitches[2]],
+          callback
+        );
       },
     ],
     // optional callback

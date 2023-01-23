@@ -73,6 +73,12 @@ exports.brand_create_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
+    const brand = new Brand({
+      name: req.body.name.toLowerCase(),
+      display_name: req.body.name,
+      origin: req.body.origin,
+    });
+
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/errors messages.
       res.render('brand_form', {
@@ -81,21 +87,30 @@ exports.brand_create_post = [
         errors: errors.array(),
       });
       return;
-    }
-    // Data from form is valid.
+    } else {
+      // Data from form is valid.
+      // Check if Switch with same name already exists.
+      Brand.findOne({ name: req.body.name.toLowerCase() }).exec(
+        (err, found_brand) => {
+          if (err) {
+            return next(err);
+          }
 
-    // Create an Author object with escaped and trimmed data.
-    const brand = new Brand({
-      name: req.body.name,
-      origin: req.body.origin,
-    });
-    brand.save((err) => {
-      if (err) {
-        return next(err);
-      }
-      // Successful - redirect to new brand record.
-      res.redirect(brand.url);
-    });
+          if (found_brand) {
+            // Switch exists, redirect to its detail page.
+            res.redirect(found_brand.url);
+          } else {
+            brand.save((err) => {
+              if (err) {
+                return next(err);
+              }
+              // Switch saved. Redirect to switch detail page.
+              res.redirect(brand.url);
+            });
+          }
+        }
+      );
+    }
   },
 ];
 

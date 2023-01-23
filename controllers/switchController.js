@@ -59,7 +59,6 @@ exports.keyboardswitch_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
-      console.log(results);
       // Successful, so render
       res.render('switch_detail', {
         title: 'Switch Detail',
@@ -96,7 +95,8 @@ exports.keyboardswitch_create_post = [
 
     // Create a genre object with escaped and trimmed data.
     const keyboard_switch = new KeyboardSwitch({
-      name: req.body.name,
+      name: req.body.name.toLowerCase(),
+      display_name: req.body.name,
       description: req.body.description,
     });
 
@@ -111,7 +111,7 @@ exports.keyboardswitch_create_post = [
     } else {
       // Data from form is valid.
       // Check if Switch with same name already exists.
-      KeyboardSwitch.findOne({ name: req.body.name }).exec(
+      KeyboardSwitch.findOne({ name: req.body.name.toLowerCase() }).exec(
         (err, found_switch) => {
           if (err) {
             return next(err);

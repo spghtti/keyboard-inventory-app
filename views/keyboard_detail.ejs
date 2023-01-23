@@ -15,19 +15,41 @@
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div>
-      <h1><%= keyboard.brand.name %> <%= keyboard.name %></h1>
+      <h1><%= keyboard.brand.display_name %> <%= keyboard.name %></h1>
     </div>
     <div>
-      <% if(keyboard.description){ %>
+      <% if(keyboard.description !== 'false'){ %>
       <p><%= keyboard.description %></p>
       <% } %>
+    </div>
+    <div>
+      <% if(keyboard.price !== 'false'){ %>
+      <p>$<%= keyboard.price %></p>
+      <% } %>
+    </div>
+    <div>
+      <h2>Switches:</h2>
+        <ul>
+          <% if(keyboard.switches.length){ %>
+            <% keyboard.switches.forEach((keyboard_switch) => { %>
+              <li>
+                <a href="<%= keyboard_switch.url %>"><%= keyboard_switch.display_name %></a>
+              </li>
+              <% }) %> 
+            <% } else { %>
+              <li>No switches available</li>
+              <% } %>
+        </ul>
+  
+      <ul>
+    </ul>
     </div>
     <ul>
       <% if(!keyboard_instances){ %>
       <p>These keyboards aren't available currently.</p>
       <% } else{ %> <% keyboard_instances.forEach((instance) => { %>
       <li>
-        <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
+        <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.display_name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
       </li>
       <% }); %> <% } %>
     </ul>

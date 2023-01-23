@@ -23,7 +23,7 @@
       <% } else{ %>
       <% keyboardinstance_list.forEach((instance) => { %>
       <li>
-        <a href="<%= instance.url %>"><%= instance.keyboard.brand.name %> <%= instance.keyboard.name %> </a>: <%= instance.status %>
+        <a href="<%= instance.url %>"><%= instance.keyboard.brand.display_name %> <%= instance.keyboard.name %> </a>: <%= instance.status %>
         <% if (instance.status === 'Sold') { %>
         (<%= instance.date_sold_formatted %>)
         <% } %>

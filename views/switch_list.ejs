@@ -22,7 +22,7 @@
       <p>No switches available</p>
       <% } else{ %> <% switch_list.forEach((keyboardSwitch) => { %>
       <li>
-        <a href="<%= keyboardSwitch.url %>"><%= keyboardSwitch.name %></a>
+        <a href="<%= keyboardSwitch.url %>"><%= keyboardSwitch.display_name %></a>
       </li>
       <% }); %> <% } %>
     </ul>
