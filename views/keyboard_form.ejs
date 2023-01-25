@@ -23,7 +23,7 @@
             <select id="brand" class="form-control" name="brand" placeholder='Select a brand' required="true" autocomplete="off">
             <% brands.forEach((brand) => {  %>
                 <% if (locals.keyboard) { %> 
-                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> " ><%= brand.display_name %> </option> 
+                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> ><%= brand.display_name %> </option> 
                 <% } else { %>
                     <option value="<%= brand._id %> "><%= brand.display_name %></option> 
                     <% } %>
