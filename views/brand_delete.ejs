@@ -34,7 +34,7 @@
         <p>Do you really want to delete this brand?</p>
         <form method="POST" action="">
             <div class="form-group">
-                <input id="brandid"class='form-control' type="hidden" name="brandid" required="true" value="brand._id">
+                <input id="brandid"class='form-control' type="hidden" name="brandid" required="true" value="<%= brand._id %>">
                 <button class="btn btn-primary" type="submit">Delete</button>
             </div>
         </form>

@@ -122,7 +122,7 @@ exports.brand_delete_get = (req, res, next) => {
         Brand.findById(req.params.id).exec(callback);
       },
       brand_keyboards(callback) {
-        Keyboard.find({ author: req.params.id }).exec(callback);
+        Keyboard.find({ brand: req.params.id }).exec(callback);
       },
     },
     (err, results) => {
@@ -148,16 +148,17 @@ exports.brand_delete_post = (req, res, next) => {
   async.parallel(
     {
       brand(callback) {
-        Brand.findById(req.body.authorid).exec(callback);
+        Brand.findById(req.body.brandid).exec(callback);
       },
       brand_keyboards(callback) {
-        Keyboard.find({ author: req.body.authorid }).exec(callback);
+        Keyboard.find({ brand: req.body.brandid }).exec(callback);
       },
     },
     (err, results) => {
       if (err) {
         return next(err);
       }
+      console.log(results.brand_keyboards);
       // Success
       if (results.brand_keyboards.length > 0) {
         // Author has books. Render in same way as for GET route.
@@ -174,7 +175,7 @@ exports.brand_delete_post = (req, res, next) => {
           return next(err);
         }
         // Success - go to author list
-        res.redirect('/catalog/brands');
+        res.redirect('/inventory/brands');
       });
     }
   );
