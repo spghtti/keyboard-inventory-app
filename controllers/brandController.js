@@ -115,13 +115,69 @@ exports.brand_create_post = [
 ];
 
 // Display Brand delete form on GET.
-exports.brand_delete_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Brand delete GET');
+exports.brand_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback);
+      },
+      brand_keyboards(callback) {
+        Keyboard.find({ author: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.brand == null) {
+        // No results.
+        res.redirect('/catalog/brands');
+      }
+      // Successful, so render.
+      res.render('brand_delete', {
+        title: 'Delete a Brand',
+        brand: results.brand,
+        brand_keyboards: results.brand_keyboards,
+      });
+    }
+  );
 };
 
 // Handle Brand delete on POST.
-exports.brand_delete_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Brand delete POST');
+exports.brand_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.body.authorid).exec(callback);
+      },
+      brand_keyboards(callback) {
+        Keyboard.find({ author: req.body.authorid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      if (results.brand_keyboards.length > 0) {
+        // Author has books. Render in same way as for GET route.
+        res.render('brand_delete', {
+          title: 'Delete a Brand',
+          brand: results.brand,
+          brand_keyboards: results.brand_keyboards,
+        });
+        return;
+      }
+      // Author has no books. Delete object and redirect to the list of authors.
+      Brand.findByIdAndRemove(req.body.brandid, (err) => {
+        if (err) {
+          return next(err);
+        }
+        // Success - go to author list
+        res.redirect('/catalog/brands');
+      });
+    }
+  );
 };
 
 // Display Brand update form on GET.
