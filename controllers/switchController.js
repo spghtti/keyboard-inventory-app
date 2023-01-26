@@ -135,13 +135,82 @@ exports.keyboardswitch_create_post = [
   },
 ];
 // Display Keyboardswitch delete form on GET.
-exports.keyboardswitch_delete_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardswitch delete GET');
+exports.keyboardswitch_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard_switch(callback) {
+        KeyboardSwitch.findById(req.params.id).exec(callback);
+      },
+      switch_instances(callback) {
+        KeyboardInstance.find({ keyboard_switch: req.params.id })
+          .populate({
+            path: 'keyboard',
+            model: 'Keyboard',
+            populate: [
+              {
+                path: 'brand',
+                model: 'Brand',
+              },
+            ],
+          })
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard_switch == null) {
+        // No results.
+        res.redirect('/inventory/switches');
+      }
+      // Successful, so render.
+      res.render('switch_delete', {
+        title: 'Delete a Switch',
+        keyboard_switch: results.keyboard_switch,
+        switch_instances: results.switch_instances,
+      });
+    }
+  );
 };
 
 // Handle Keyboardswitch delete on POST.
-exports.keyboardswitch_delete_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardswitch delete POST');
+exports.keyboardswitch_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard_switch(callback) {
+        KeyboardSwitch.findById(req.body.keyboard_switch_id).exec(callback);
+      },
+      switch_instances(callback) {
+        KeyboardInstance.find({
+          keyboard_switch: req.body.keyboard_switch_id,
+        }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      if (results.switch_instances.length > 0) {
+        // Keyboard has books. Render in same way as for GET route.
+        res.render('switch_delete', {
+          title: 'Delete a Switch',
+          keyboard_switch: results.keyboard_switch,
+          switch_instances: results.switch_instances,
+        });
+        return;
+      }
+      // Author has no books. Delete object and redirect to the list of authors.
+      KeyboardSwitch.findByIdAndRemove(req.body.keyboard_switch_id, (err) => {
+        if (err) {
+          return next(err);
+        }
+        // Success - go to author list
+        res.redirect('/inventory/switches');
+      });
+    }
+  );
 };
 
 // Display Keyboardswitch update form on GET.
