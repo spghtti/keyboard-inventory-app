@@ -58,10 +58,7 @@ exports.keyboard_detail = (req, res, next) => {
   async.parallel(
     {
       keyboard(callback) {
-        Keyboard.findById(req.params.id)
-          .populate('brand')
-          .populate('switches')
-          .exec(callback);
+        Keyboard.findById(req.params.id).populate('brand').exec(callback);
       },
       keyboard_instances(callback) {
         KeyboardInstance.find({ keyboard: req.params.id })
@@ -71,7 +68,6 @@ exports.keyboard_detail = (req, res, next) => {
       },
     },
     (err, results) => {
-      console.log(results.keyboard_instances);
       if (err) {
         return next(err);
       }
@@ -99,9 +95,6 @@ exports.keyboard_create_get = (req, res, next) => {
       brands(callback) {
         Brand.find(callback);
       },
-      switches(callback) {
-        Switch.find(callback);
-      },
     },
     (err, results) => {
       if (err) {
@@ -110,7 +103,6 @@ exports.keyboard_create_get = (req, res, next) => {
       res.render('keyboard_form', {
         title: 'Create New Keyboard',
         brands: results.brands,
-        switches: results.switches,
       });
     }
   );
@@ -141,11 +133,6 @@ exports.keyboard_create_post = [
     .isInt()
     .withMessage('Price should be a number')
     .isLength({ min: 1 })
-    .escape(),
-  body('switches.*').trim().escape(),
-  body('switches')
-    .isArray({ min: 1 })
-    .withMessage('Please choose a switch')
     .escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
