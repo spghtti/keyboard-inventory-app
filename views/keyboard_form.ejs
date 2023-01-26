@@ -30,7 +30,7 @@
                 <% })  %>
         </select>
             <label for="description">Description:</label>
-            <textarea type="text" id="description" class="form-control" name="description" value="<%= locals.keyboard === undefined ? '' : locals.keyboard.description %>"></textarea>
+            <textarea type="text" id="description" class="form-control" name="description" value=""><%= locals.keyboard === undefined ? '' : locals.keyboard.description %></textarea>
             <label for="price">Price</label>
             <input type="number" id="price" class="form-control" name="price" value="<%= locals.keyboard === undefined ? '' : locals.keyboard.price %>">
             <label for="switches">Switches:</label>
