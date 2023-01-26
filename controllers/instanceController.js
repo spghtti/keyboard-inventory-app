@@ -2,6 +2,8 @@ const KeyboardInstance = require('../models/keyboardinstance');
 const Keyboard = require('../models/keyboard');
 const KeyboardSwitch = require('../models/keyboardswitch');
 
+const async = require('async');
+
 const { body, validationResult } = require('express-validator');
 
 // Display list of all Keyboardinstances.
@@ -134,13 +136,56 @@ exports.keyboardinstance_create_post = [
 ];
 
 // Display Keyboardinstance delete form on GET.
-exports.keyboardinstance_delete_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardinstance delete GET');
+exports.keyboardinstance_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard_instance(callback) {
+        KeyboardInstance.findById(req.params.id).exec(callback);
+      },
+    },
+    (err, results) => {
+      console.log(results);
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard_instance == null) {
+        // No results.
+        res.redirect('/inventory/instances');
+      }
+      // Successful, so render.
+      res.render('instance_delete', {
+        title: 'Delete an Instance',
+        keyboard_instance: results.keyboard_instance,
+      });
+    }
+  );
 };
 
 // Handle Keyboardinstance delete on POST.
-exports.keyboardinstance_delete_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardinstance delete POST');
+exports.keyboardinstance_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard_instance(callback) {
+        KeyboardInstance.findById(req.body.keyboard_instance_id).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      KeyboardInstance.findByIdAndRemove(
+        req.body.keyboard_instance_id,
+        (err) => {
+          if (err) {
+            return next(err);
+          }
+          // Success - go to full list
+          res.redirect('/inventory/instances');
+        }
+      );
+    }
+  );
 };
 
 // Display Keyboardinstance update form on GET.

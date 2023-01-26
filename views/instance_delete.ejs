@@ -10,20 +10,18 @@
   <link rel="shortcut icon" href="#" />
   <title><%= title %></title>
 </head>
+
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <div>
-      <h1>ID: <%=keyboardinstance._id %></h1>
-    </div>
-    <ul>
-     <li><a href="<%= keyboardinstance.keyboard.url %>"><%= keyboardinstance.keyboard.name %></a></li>
-      <li><p>Status: <%= keyboardinstance.status  %> </p>
-      </li>
-      <li><p>Date sold: <%= keyboardinstance.date_sold ? keyboardinstance.date_sold_formatted : 'N/A' %>
-      </li>
-    </ul>
-    <p><a href="<%=keyboardinstance.url + '/delete' %>">Delete instance</a></p>
+    <h1><%= title %></h1>
+        <p>Do you really want to delete this instance?</p>
+        <form method="POST" action="">
+            <div class="form-group">
+                <input id="keyboard_instance_id"class='form-control' type="hidden" name="keyboard_instance_id" required="true" value="<%= keyboard_instance._id %>">
+                <button class="btn btn-primary" type="submit">Delete</button>
+            </div>
+        </form>
   </div>
 </body>
 

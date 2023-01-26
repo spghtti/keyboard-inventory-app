@@ -158,7 +158,6 @@ exports.brand_delete_post = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      console.log(results.brand_keyboards);
       // Success
       if (results.brand_keyboards.length > 0) {
         // Author has books. Render in same way as for GET route.
