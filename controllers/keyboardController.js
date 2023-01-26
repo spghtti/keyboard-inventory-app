@@ -134,14 +134,18 @@ exports.keyboard_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('description', 'Description must not be empty.').trim().escape(),
+  body('description').trim().optional({ checkFalsy: true }).escape(),
   body('price', 'Please fill out a price')
     .trim()
     .isInt()
     .withMessage('Price should be a number')
     .isLength({ min: 1 })
     .escape(),
-  body('switches.*').escape(),
+  body('switches.*').trim().escape(),
+  body('switches')
+    .isArray({ min: 1 })
+    .withMessage('Please choose a switch')
+    .escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
