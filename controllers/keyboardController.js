@@ -71,6 +71,7 @@ exports.keyboard_detail = (req, res, next) => {
       },
     },
     (err, results) => {
+      console.log(results.keyboard_instances);
       if (err) {
         return next(err);
       }

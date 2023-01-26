@@ -30,10 +30,10 @@
     <div>
       <h2>Switches:</h2>
         <ul>
-          <% if(keyboard.switches.length){ %>
-            <% keyboard.switches.forEach((keyboard_switch) => { %>
+          <% if(keyboard_instances.length){ %>
+            <% keyboard_instances.forEach((instance) => { %>
               <li>
-                <a href="<%= keyboard_switch.url %>"><%= keyboard_switch.display_name %></a>
+                <a href="<%= instance.keyboard_switch.url %>"><%= instance.keyboard_switch.display_name %></a>
               </li>
               <% }) %> 
             <% } else { %>
