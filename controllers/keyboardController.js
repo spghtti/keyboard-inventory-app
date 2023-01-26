@@ -196,13 +196,93 @@ exports.keyboard_create_post = [
 ];
 
 // Display keyboard delete form on GET.
-exports.keyboard_delete_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboard delete GET');
+exports.keyboard_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard(callback) {
+        Keyboard.findById(req.params.id).exec(callback);
+      },
+      keyboard_instances(callback) {
+        KeyboardInstance.find({ keyboard: req.params.id })
+          .populate({
+            path: 'keyboard',
+            model: 'Keyboard',
+            populate: [
+              {
+                path: 'brand',
+                model: 'Brand',
+              },
+            ],
+          })
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard == null) {
+        // No results.
+        res.redirect('/inventory/keyboards');
+      }
+      // Successful, so render.
+      res.render('keyboard_delete', {
+        title: 'Delete a Keyboard',
+        keyboard: results.keyboard,
+        keyboard_instances: results.keyboard_instances,
+      });
+    }
+  );
 };
 
 // Handle keyboard delete on POST.
-exports.keyboard_delete_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboard delete POST');
+exports.keyboard_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      keyboard(callback) {
+        Keyboard.findById(req.body.keyboard_id).exec(callback);
+      },
+      keyboard_instances(callback) {
+        KeyboardInstance.find({
+          keyboard_switch: req.body.keyboard_id,
+        })
+          .populate({
+            path: 'keyboard',
+            model: 'Keyboard',
+            populate: [
+              {
+                path: 'brand',
+                model: 'Brand',
+              },
+            ],
+          })
+          .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      if (results.keyboard_instances.length > 0) {
+        // Keyboard has books. Render in same way as for GET route.
+        res.render('switch_delete', {
+          title: 'Delete a Switch',
+          keyboard: results.keyboard,
+          keyboard_instances: results.keyboard_instances,
+        });
+        return;
+      }
+      // Author has no books. Delete object and redirect to the list of authors.
+      Keyboard.findByIdAndRemove(req.body.keyboard_id, (err) => {
+        if (err) {
+          return next(err);
+        }
+        // Success - go to author list
+        res.redirect('/inventory/keyboards');
+      });
+    }
+  );
 };
 
 // Display keyboard update form on GET.
@@ -233,21 +313,6 @@ exports.keyboard_update_get = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
-      // Success.
-      // Mark our selected genres as checked.
-      console.log('switch list');
-      console.log(results.switches);
-      console.log('keyboard switch list');
-      console.log(results.keyboard.switches);
-      // for (const keyboardSwitch of results.switches) {
-      //   for (const keyboardSwitches of results.keyboard.switches) {
-      //     if (
-      //       keyboardSwitch._id.toString() === keyboardSwitches._id.toString()
-      //     ) {
-      //       keyboardSwitch.checked = 'true';
-      //     }
-      //   }
-      // }
       for (const keyboard_switch of results.switches) {
         for (const thisKeyboardSwitch of results.keyboard.switches) {
           if (

@@ -182,9 +182,20 @@ exports.keyboardswitch_delete_post = (req, res, next) => {
         KeyboardSwitch.findById(req.body.keyboard_switch_id).exec(callback);
       },
       switch_instances(callback) {
-        KeyboardInstance.find({
-          keyboard_switch: req.body.keyboard_switch_id,
-        }).exec(callback);
+        KeyboardInstance.find(
+          {
+            keyboard_switch: req.body.keyboard_switch_id,
+          }.populate({
+            path: 'keyboard',
+            model: 'Keyboard',
+            populate: [
+              {
+                path: 'brand',
+                model: 'Brand',
+              },
+            ],
+          })
+        ).exec(callback);
       },
     },
     (err, results) => {

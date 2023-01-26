@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/stylesheets/reset.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="shortcut icon" href="#" />
+  <title><%= title %></title>
+</head>
+
+<body>
+  <%- include('sidebar') -%>
+  <div class="wrapper">
+    <h1><%= title %></h1>
+    <% if (locals.keyboard_instances.length) { %>
+    <p class="error">You must delete a keyboard's instances before deleting it.</p>
+    <div>
+        <h3>Instances:</h3>
+        <ul>
+            <% keyboard_instances.forEach((instance) => { %> 
+                <li>
+                    <%= instance.keyboard.brand.display_name %> <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.display_name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
+                  </li>
+            <% })  %> 
+        </ul>
+    </div> 
+    <% } else { %>
+        <p>Do you really want to delete this keyboard?</p>
+        <form method="POST" action="">
+            <div class="form-group">
+                <input id="keyboard_id"class='form-control' type="hidden" name="keyboard_id" required="true" value="<%= keyboard._id %>">
+                <button class="btn btn-primary" type="submit">Delete</button>
+            </div>
+        </form>
+        <% } %> 
+  </div>
+</body>
+
+</html>
