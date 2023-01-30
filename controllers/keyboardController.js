@@ -313,15 +313,6 @@ exports.keyboard_update_get = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
-      for (const keyboard_switch of results.switches) {
-        for (const thisKeyboardSwitch of results.keyboard.switches) {
-          if (
-            keyboard_switch._id.toString() === thisKeyboardSwitch._id.toString()
-          ) {
-            keyboard_switch.checked = 'checked';
-          }
-        }
-      }
       res.render('keyboard_form', {
         title: 'Update Keyboard',
         brands: results.brands,
@@ -372,8 +363,6 @@ exports.keyboard_update_post = [
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
-      switches:
-        typeof req.body.switches === 'undefined' ? [] : req.body.switches,
       _id: req.params.id, //This is required, or a new ID will be assigned!
     });
 

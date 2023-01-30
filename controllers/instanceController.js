@@ -113,8 +113,8 @@ exports.keyboardinstance_create_post = [
           res.render('instance_form', {
             title: 'Create New Instance',
             keyboard_list: keyboards,
-            selected_keyboard: keyboardinstance.keyboard._id,
-            selected_switch: keyboardinstance.switch._id,
+            selected_keyboard: keyboardinstance.keyboard._id.toString(),
+            selected_switch: keyboardinstance.switch._id.toString(),
             keyboard_switch_list: switches,
             errors: errors.array(),
             keyboardinstance,
@@ -189,11 +189,125 @@ exports.keyboardinstance_delete_post = (req, res, next) => {
 };
 
 // Display Keyboardinstance update form on GET.
-exports.keyboardinstance_update_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardinstance update GET');
+exports.keyboardinstance_update_get = (req, res, next) => {
+  // Get book, authors and genres for form.
+  async.parallel(
+    {
+      keyboard_instance(callback) {
+        KeyboardInstance.findById(req.params.id)
+          .populate('keyboard_switch')
+          .populate('keyboard')
+          .exec(callback);
+      },
+      keyboards(callback) {
+        Keyboard.find(callback);
+      },
+      switches(callback) {
+        KeyboardSwitch.find(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard_instance == null) {
+        // No results.
+        const err = new Error('Book not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('instance_form', {
+        title: 'Update Instance',
+        keyboardinstance: results.keyboard_instance,
+        keyboard_list: results.keyboards,
+        keyboard_switch_list: results.switches,
+        selected_keyboard: results.keyboard_instance.keyboard._id.toString(),
+        selected_switch:
+          results.keyboard_instance.keyboard_switch._id.toString(),
+      });
+    }
+  );
 };
 
 // Handle keyboardinstance update on POST.
-exports.keyboardinstance_update_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardinstance update POST');
-};
+exports.keyboardinstance_update_post = [
+  // Validate and sanitize fields.
+  body('keyboard', 'Keyboard must be specified')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('status').escape(),
+  body('keyboard_switch', 'Specify a switch type').trim().escape(),
+  body('date_sold', 'Invalid date')
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped/trimmed data and old id.
+    const keyboardinstance = new KeyboardInstance({
+      keyboard: req.body.keyboard,
+      status: req.body.status,
+      keyboard_switch: req.body.keyboard_switch,
+      date_sold: req.body.date_sold,
+      _id: req.params.id, //This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all authors and genres for form.
+      async.parallel(
+        {
+          keyboard_instance(callback) {
+            KeyboardInstance.findById(req.params.id)
+              .populate('keyboard_switch')
+              .populate('keyboard')
+              .exec(callback);
+          },
+          keyboards(callback) {
+            Keyboard.find(callback);
+          },
+          switches(callback) {
+            KeyboardSwitch.find(callback);
+          },
+        },
+        (err, results) => {
+          if (err) {
+            return next(err);
+          }
+          res.render('instance_form', {
+            title: 'Update Instance',
+            keyboardinstance,
+            keyboard_list: results.keyboards,
+            keyboard_switch_list: results.switches,
+            selected_keyboard:
+              results.keyboard_instance.keyboard._id.toString(),
+            selected_switch:
+              results.keyboard_instance.keyboard_switch._id.toString(),
+            errors: errors.array(),
+          });
+        }
+      );
+      return;
+    }
+
+    // Data from form is valid. Update the record.
+    KeyboardInstance.findByIdAndUpdate(
+      req.params.id,
+      keyboardinstance,
+      {},
+      (err, theinstance) => {
+        if (err) {
+          return next(err);
+        }
+
+        // Successful: redirect to book detail page.
+        res.redirect(theinstance.url);
+      }
+    );
+  },
+];

@@ -23,6 +23,7 @@
       <li><p>Date sold: <%= keyboardinstance.date_sold ? keyboardinstance.date_sold_formatted : 'N/A' %>
       </li>
     </ul>
+    <p><a href="<%= keyboardinstance.url + '/update' %> ">Update instance</a></p>
     <p><a href="<%=keyboardinstance.url + '/delete' %>">Delete instance</a></p>
   </div>
 </body>
