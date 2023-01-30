@@ -63,7 +63,6 @@ exports.keyboardinstance_create_get = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      console.log(switches);
       res.render('instance_form', {
         title: 'Create New Instance',
         keyboard_list: keyboards,
@@ -144,7 +143,6 @@ exports.keyboardinstance_delete_get = (req, res, next) => {
       },
     },
     (err, results) => {
-      console.log(results);
       if (err) {
         return next(err);
       }
@@ -212,7 +210,7 @@ exports.keyboardinstance_update_get = (req, res, next) => {
       }
       if (results.keyboard_instance == null) {
         // No results.
-        const err = new Error('Book not found');
+        const err = new Error('Instance not found');
         err.status = 404;
         return next(err);
       }

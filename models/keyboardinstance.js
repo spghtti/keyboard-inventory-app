@@ -16,7 +16,7 @@ const KeyboardInstanceSchema = new Schema({
     ref: 'KeyboardSwitch',
     required: true,
   },
-  date_sold: { type: Date, default: Date.now },
+  date_sold: { type: Date },
 });
 
 KeyboardInstanceSchema.virtual('url').get(function () {

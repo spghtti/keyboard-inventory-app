@@ -68,6 +68,7 @@ exports.brand_create_post = [
     .withMessage('Name must be at least 3 characters.')
     .escape(),
   body('origin').trim().optional({ checkFalsy: true }).escape(),
+  body('description').trim().optional({ checkFalsy: true }).escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -77,6 +78,7 @@ exports.brand_create_post = [
       name: req.body.name.toLowerCase(),
       display_name: req.body.name,
       origin: req.body.origin,
+      description: req.body.description,
     });
 
     if (!errors.isEmpty()) {
@@ -181,8 +183,31 @@ exports.brand_delete_post = (req, res, next) => {
 };
 
 // Display Brand update form on GET.
-exports.brand_update_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Brand update GET');
+exports.brand_update_get = (req, res, next) => {
+  // Get book, authors and genres for form.
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      console.log(results.brand);
+      if (results.brand == null) {
+        // No results.
+        const err = new Error('Brand not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('brand_form', {
+        title: 'Update Brand',
+        brand: results.brand,
+      });
+    }
+  );
 };
 
 // Handle Brand update on POST.

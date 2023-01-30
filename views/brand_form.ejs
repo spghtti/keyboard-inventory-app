@@ -21,6 +21,8 @@
             <input type="text" id="name" class="form-control" name="name" value="<%= locals.brand === undefined ? '' : brand.display_name %>" >
             <label for="origin">Country of origin:</label>
             <input type="text" id="origin" class="form-control" name="origin" value="<%= locals.brand === undefined ? '' : locals.brand.origin %>">
+            <label for="description">Description:</label>
+            <textarea type="text" id="description" class="form-control" name="description" value=""><%= locals.brand === undefined ? '' : locals.brand.description %></textarea>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
         <% if(locals.errors) { %>
