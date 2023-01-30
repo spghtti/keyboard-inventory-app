@@ -283,7 +283,7 @@ exports.keyboardswitch_update_post = [
       // Get all authors and genres for form
       res.render('switch_form', {
         title: 'Update Switch',
-        brand,
+        keyboard_switch,
         errors: errors.array(),
       });
       return;
