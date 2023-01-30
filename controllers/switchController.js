@@ -225,11 +225,83 @@ exports.keyboardswitch_delete_post = (req, res, next) => {
 };
 
 // Display Keyboardswitch update form on GET.
-exports.keyboardswitch_update_get = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardswitch update GET');
+exports.keyboardswitch_update_get = (req, res, next) => {
+  // Get book, authors and genres for form.
+  async.parallel(
+    {
+      keyboard_switch(callback) {
+        KeyboardSwitch.findById(req.params.id).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.keyboard_switch == null) {
+        // No results.
+        const err = new Error('Switch not found');
+        err.status = 404;
+        return next(err);
+      }
+      res.render('switch_form', {
+        title: 'Update Switch',
+        keyboard_switch: results.keyboard_switch,
+      });
+    }
+  );
 };
 
 // Handle Keyboardswitch update on POST.
-exports.keyboardswitch_update_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Keyboardswitch update POST');
-};
+exports.keyboardswitch_update_post = [
+  // Validate and sanitize fields.
+  body('name', 'Name must be between 3 and 100 characters.')
+    .trim()
+    .isLength({ min: 3, max: 100 })
+    .escape(),
+  body('description', 'Description must be under 500 characters.')
+    .trim()
+    .isLength({ max: 500 })
+    .optional({ checkFalsy: true })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped/trimmed data and old id.
+    const keyboard_switch = new KeyboardSwitch({
+      name: req.body.name.toLowerCase(),
+      display_name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id, //This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all authors and genres for form
+      res.render('switch_form', {
+        title: 'Update Switch',
+        brand,
+        errors: errors.array(),
+      });
+      return;
+    }
+
+    // Data from form is valid. Update the record.
+    KeyboardSwitch.findByIdAndUpdate(
+      req.params.id,
+      keyboard_switch,
+      {},
+      (err, theswitch) => {
+        if (err) {
+          return next(err);
+        }
+
+        // Successful: redirect to book detail page.
+        res.redirect(theswitch.url);
+      }
+    );
+  },
+];
