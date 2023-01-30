@@ -10,7 +10,7 @@ const KeyboardSchema = new Schema({
     minLength: 3,
     required: true,
   },
-  description: { type: String },
+  description: { type: String, maxLength: 500 },
   price: { type: Number, required: true },
   switches: [
     { type: Schema.Types.ObjectId, ref: 'KeyboardSwitch', required: true },

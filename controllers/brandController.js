@@ -211,6 +211,56 @@ exports.brand_update_get = (req, res, next) => {
 };
 
 // Handle Brand update on POST.
-exports.brand_update_post = (req, res) => {
-  res.send('NOT IMPLEMENTED: Brand update POST');
-};
+exports.brand_update_post = [
+  // Validate and sanitize fields.
+  body('name', 'Name must at least 3 characters.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('origin', 'Origin must be under 100 characters.')
+    .trim()
+    .isLength({ max: 100 })
+    .escape(),
+  body('description', 'Description must be under 500 characters.')
+    .trim()
+    .isLength({ max: 500 })
+    .optional({ checkFalsy: true })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped/trimmed data and old id.
+    const brand = new Brand({
+      name: req.body.name.toLowerCase(),
+      display_name: req.body.name,
+      origin: req.body.origin,
+      description: req.body.description,
+      _id: req.params.id, //This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all authors and genres for form
+      res.render('brand_form', {
+        title: 'Update Brand',
+        brand,
+        errors: errors.array(),
+      });
+      return;
+    }
+
+    // Data from form is valid. Update the record.
+    Brand.findByIdAndUpdate(req.params.id, brand, {}, (err, thebrand) => {
+      if (err) {
+        return next(err);
+      }
+
+      // Successful: redirect to book detail page.
+      res.redirect(thebrand.url);
+    });
+  },
+];
