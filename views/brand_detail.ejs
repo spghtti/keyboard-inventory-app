@@ -22,6 +22,11 @@
       <p><%= brand.origin %></p>
       <% } %>
     </div>
+    <div>
+      <% if(brand.description){ %>
+      <p><%= brand.description %></p>
+      <% } %>
+    </div>
     <ul>
       <% if(!brand_keyboards){ %>
       <p>This brand doesn't have any keyboards.</p>

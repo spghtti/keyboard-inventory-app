@@ -35,6 +35,7 @@ exports.keyboardinstance_list = (req, res, next) => {
 exports.keyboardinstance_detail = (req, res, next) => {
   KeyboardInstance.findById(req.params.id)
     .populate('keyboard')
+    .populate('keyboard_switch')
     .exec((err, keyboardinstance) => {
       if (err) {
         return next(err);
@@ -45,6 +46,7 @@ exports.keyboardinstance_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+      console.log(keyboardinstance.keyboard_switch);
       // Successful, so render.
       res.render('instance_detail', {
         title: `Keyboard: ${keyboardinstance.keyboard.name}`,
@@ -245,12 +247,14 @@ exports.keyboardinstance_update_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
+    const date_sold = req.body.status !== 'Sold' ? '' : req.body.date_sold;
+
     // Create a Book object with escaped/trimmed data and old id.
     const keyboardinstance = new KeyboardInstance({
       keyboard: req.body.keyboard,
       status: req.body.status,
       keyboard_switch: req.body.keyboard_switch,
-      date_sold: req.body.date_sold,
+      date_sold,
       _id: req.params.id, //This is required, or a new ID will be assigned!
     });
 

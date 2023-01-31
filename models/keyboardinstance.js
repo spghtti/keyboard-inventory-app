@@ -27,5 +27,9 @@ KeyboardInstanceSchema.virtual('date_sold_formatted').get(function () {
   return DateTime.fromJSDate(this.date_sold).toLocaleString(DateTime.DATE_MED);
 });
 
-// Export model
+KeyboardInstanceSchema.virtual('date_sold_year_first').get(function () {
+  return DateTime.fromJSDate(this.date_sold).toISODate().toString();
+});
+
+// Export modelS
 module.exports = mongoose.model('KeyboardInstance', KeyboardInstanceSchema);

@@ -19,6 +19,9 @@
         <div class="form-group">
             <label for="name">Keyboard:</label>
             <select id='book' class='form-control' placeholder="Select a keyboard" name="keyboard" required="true">
+                <% if (!locals.keyboardinstance) { %>
+                    <option value="" selected>Select a keyboard</option>
+                    <% } %>
                 <% keyboard_list.forEach((keyboard) => {  %>
                     <% if (locals.keyboardinstance) { %>
                     <option value="<%= keyboard._id %>" <%= (keyboard._id.toString() == locals.selected_keyboard ? 'selected' : selected="false") %> ><%= keyboard.name %></option> 
@@ -28,7 +31,10 @@
                     <% }) %>
             </select>
             <label for="keyboard_switch">Switch:</label>
-            <select id='keyboard_switch' class='form-control' placeholder="Select a switch" name="keyboard_switch" required="true">
+            <select id='keyboard_switch' class='form-control' name="keyboard_switch" required="true">
+                <% if (!locals.keyboardinstance) { %>
+                <option value="" selected>Select a switch</option>
+                <% } %>
                 <% keyboard_switch_list.forEach((keyboard_switch) => {  %>
                     <% if (locals.keyboardinstance) { %>
                     <option value="<%= keyboard_switch._id %>" <%= (keyboard_switch._id.toString() === locals.selected_switch ? 'selected' : selected="false") %> ><%= keyboard_switch.display_name %></option> 
@@ -43,14 +49,19 @@
                 <option value="In-stock" <%= (keyboardinstance.status === 'In-stock' ? 'selected' : selected="false") %> >In-stock</option>
                 <option value="Returned" <%= (keyboardinstance.status === 'Returned' ? 'selected' : selected="false") %>>Returned</option>
                 <option value="Sold" <%= (keyboardinstance.status === 'Sold' ? 'selected' : selected="false") %>>Sold</option>
+                <% } else { %>
+                    <option value="In-stock">In-stock</option>
+                    <option value="Returned">Returned</option>
+                    <option value="Sold">Sold</option>
                 <% } %>
             </select>
-            <label for="date_sold">Date when sold:</label>
             <% if (locals.keyboardinstance) { %>
+                <label for="date_sold">Date when sold:</label>
                 <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= keyboardinstance.date_sold %>">
-            <% } else { %>
-                      <input id='date_sold' class='form-control' type="date" name="date_sold" value="" %>">
-                <% } %>
+                <% if (locals.keyboardinstance.date_sold) { %>
+                      <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : ''%>" %>">
+                    <% } %>
+            <% } %>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>
         <% if(locals.errors) { %>

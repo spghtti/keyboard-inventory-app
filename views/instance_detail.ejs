@@ -17,7 +17,8 @@
       <h1>ID: <%=keyboardinstance._id %></h1>
     </div>
     <ul>
-     <li><a href="<%= keyboardinstance.keyboard.url %>"><%= keyboardinstance.keyboard.name %></a></li>
+     <li>Keyboard: <a href="<%= keyboardinstance.keyboard.url %>"><%= keyboardinstance.keyboard.name %></a></li>
+     <li>Switch: <a href="<%= keyboardinstance.keyboard_switch.url %>"> <%= keyboardinstance.keyboard_switch.display_name %></a></li>
       <li><p>Status: <%= keyboardinstance.status  %> </p>
       </li>
       <li><p>Date sold: <%= keyboardinstance.date_sold ? keyboardinstance.date_sold_formatted : 'N/A' %>

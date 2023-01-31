@@ -67,8 +67,18 @@ exports.brand_create_post = [
     .isLength({ min: 3 })
     .withMessage('Name must be at least 3 characters.')
     .escape(),
-  body('origin').trim().optional({ checkFalsy: true }).escape(),
-  body('description').trim().optional({ checkFalsy: true }).escape(),
+  body('origin')
+    .trim()
+    .optional({ checkFalsy: true })
+    .isLength({ max: 100 })
+    .withMessage('Origin must be under 100 characters.')
+    .escape(),
+  body('description')
+    .trim()
+    .optional({ checkFalsy: true })
+    .isLength({ max: 500 })
+    .withMessage('Description must be under 500 characters.')
+    .escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -213,18 +223,22 @@ exports.brand_update_get = (req, res, next) => {
 // Handle Brand update on POST.
 exports.brand_update_post = [
   // Validate and sanitize fields.
-  body('name', 'Name must at least 3 characters.')
+  body('name')
     .trim()
     .isLength({ min: 3 })
+    .withMessage('Name must be at least 3 characters.')
     .escape(),
-  body('origin', 'Origin must be under 100 characters.')
+  body('origin')
     .trim()
-    .isLength({ max: 100 })
-    .escape(),
-  body('description', 'Description must be under 500 characters.')
-    .trim()
-    .isLength({ max: 500 })
     .optional({ checkFalsy: true })
+    .isLength({ max: 100 })
+    .withMessage('Origin must be under 100 characters.')
+    .escape(),
+  body('description')
+    .trim()
+    .optional({ checkFalsy: true })
+    .isLength({ max: 500 })
+    .withMessage('Description must be under 500 characters.')
     .escape(),
 
   // Process request after validation and sanitization.

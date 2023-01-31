@@ -111,28 +111,25 @@ exports.keyboard_create_get = (req, res, next) => {
 // Handle keyboard create on POST.
 exports.keyboard_create_post = [
   // Convert the switches to an array.
-  (req, res, next) => {
-    if (!Array.isArray(req.body.switches)) {
-      req.body.switches =
-        typeof req.body.switches === 'undefined' ? [] : [req.body.switches];
-    }
-    next();
-  },
   // Validate and sanitize fields.
-  body('name', 'Name must be at least 3 characters.')
+  body('name', 'Name must be 3-100 characters.')
     .trim()
-    .isLength({ min: 3 })
+    .isLength({ min: 3, max: 100 })
     .escape(),
   body('brand', 'Brand name must not be empty.')
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body('description').trim().optional({ checkFalsy: true }).escape(),
+  body('description')
+    .trim()
+    .optional({ checkFalsy: true })
+    .isLength({ max: 500 })
+    .withMessage('Description must be under 500 characters')
+    .escape(),
   body('price', 'Please fill out a price')
     .trim()
-    .isInt()
-    .withMessage('Price should be a number')
-    .isLength({ min: 1 })
+    .isInt({ min: 1 })
+    .withMessage('Price must be at least $1')
     .escape(),
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -144,7 +141,6 @@ exports.keyboard_create_post = [
       name: req.body.name,
       brand: req.body.brand,
       description: req.body.description,
-      switches: req.body.switches,
       price: req.body.price,
     });
 
@@ -157,25 +153,14 @@ exports.keyboard_create_post = [
           brands(callback) {
             Brand.find(callback);
           },
-          switches(callback) {
-            Switch.find(callback);
-          },
         },
         (err, results) => {
           if (err) {
             return next(err);
           }
-
-          // Mark our selected switch as checked.
-          for (const keyboard_switch of results.switches) {
-            if (keyboard.switches.includes(keyboard_switch._id)) {
-              keyboard_switch.checked = 'checked';
-            }
-          }
           res.render('keyboard_form', {
             title: 'Create New Keyboard',
             brands: results.brands,
-            switches: results.switches,
             keyboard,
             errors: errors.array(),
           });
@@ -291,16 +276,10 @@ exports.keyboard_update_get = (req, res, next) => {
   async.parallel(
     {
       keyboard(callback) {
-        Keyboard.findById(req.params.id)
-          .populate('brand')
-          .populate('switches')
-          .exec(callback);
+        Keyboard.findById(req.params.id).populate('brand').exec(callback);
       },
       brands(callback) {
         Brand.find(callback);
-      },
-      switches(callback) {
-        Switch.find(callback);
       },
     },
     (err, results) => {
@@ -316,7 +295,6 @@ exports.keyboard_update_get = (req, res, next) => {
       res.render('keyboard_form', {
         title: 'Update Keyboard',
         brands: results.brands,
-        switches: results.switches,
         keyboard: results.keyboard,
       });
     }
@@ -325,32 +303,26 @@ exports.keyboard_update_get = (req, res, next) => {
 
 // Handle keyboard update on POST.
 exports.keyboard_update_post = [
-  // Convert the genre to an array
-  (req, res, next) => {
-    if (!Array.isArray(req.body.switches)) {
-      req.body.switches =
-        typeof req.body.switches === 'undefined' ? [] : [req.body.switches];
-    }
-    next();
-  },
-
   // Validate and sanitize fields.
-  body('name', 'Name must at least 3 characters.')
+  body('name', 'Name must be 3-100 characters.')
     .trim()
-    .isLength({ min: 3 })
+    .isLength({ min: 3, max: 100 })
     .escape(),
-  body('brand', 'Name must at least 3 characters.')
+  body('brand', 'Brand name must not be empty.')
     .trim()
-    .isLength({ min: 3 })
-    .escape(),
-  body('description').trim().optional({ checkFalsy: true }).escape(),
-  body('price', 'Please fill out a price')
-    .trim()
-    .isInt()
-    .withMessage('Price should be a number')
     .isLength({ min: 1 })
     .escape(),
-  body('switches.*').escape(),
+  body('description')
+    .trim()
+    .optional({ checkFalsy: true })
+    .isLength({ max: 500 })
+    .withMessage('Description must be under 500 characters')
+    .escape(),
+  body('price', 'Please fill out a price')
+    .trim()
+    .isInt({ min: 1 })
+    .withMessage('Price must be at least $1')
+    .escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -373,27 +345,17 @@ exports.keyboard_update_post = [
       async.parallel(
         {
           brands(callback) {
-            Author.find(callback);
-          },
-          switches(callback) {
-            Genre.find(callback);
+            Brand.find(callback);
           },
         },
         (err, results) => {
           if (err) {
             return next(err);
           }
-
-          // Mark our selected genres as checked.
-          for (const keyboard_switch of results.switches) {
-            if (keyboard.switches.includes(keyboard_switch._id)) {
-              keyboard_switch.checked = 'checked';
-            }
-          }
+          // Mark our selected genres
           res.render('keyboard_form', {
             title: 'Update Keyboard',
             brands: results.brands,
-            switches: results.switches,
             keyboard,
             errors: errors.array(),
           });
