@@ -20,7 +20,7 @@
             <label for="name">Keyboard:</label>
             <select id='book' class='form-control' placeholder="Select a keyboard" name="keyboard" required="true">
                 <% if (!locals.keyboardinstance) { %>
-                    <option value="" selected>Select a keyboard</option>
+                    <option value="" selected disabled>Select a keyboard</option>
                     <% } %>
                 <% keyboard_list.forEach((keyboard) => {  %>
                     <% if (locals.keyboardinstance) { %>
@@ -33,7 +33,7 @@
             <label for="keyboard_switch">Switch:</label>
             <select id='keyboard_switch' class='form-control' name="keyboard_switch" required="true">
                 <% if (!locals.keyboardinstance) { %>
-                <option value="" selected>Select a switch</option>
+                <option value="" selected disabled>Select a switch</option>
                 <% } %>
                 <% keyboard_switch_list.forEach((keyboard_switch) => {  %>
                     <% if (locals.keyboardinstance) { %>
