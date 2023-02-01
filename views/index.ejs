@@ -15,37 +15,37 @@
     <div class="wrapper">
         <div class="header">
           <div class="headline">
-            <h1><%= title %></h1>
+            <h1 class="strong"><%= title %></h1>
           </div>
         <p>
           This is a CRUD app for a fictional keyboard store used to track inventory. You can see what's in-stock; find info about brands, boards, or switches; mark keyboards as sold; and more. 
           <br>
           <br>
-          It's built with Mongo, Node, Express and EJS. 
+          It's built with Mongo, Node, Express, and EJS. 
         </p>
         </div>
       <% if(error){ %>
       <p class="error">Error getting data</p>
       <% } else{ %>
-      <h2>Inventory:</h2>
+      <h2 class="strong">Current Inventory:</h2>
       <ul>
-        <div class="list-row">
+        <div class="inactive-row">
         <li><span class="strong">In-stock:</span> <%= data.keyboard_instance_available_count %></li>
         </div>
-        <div class="list-row">
+        <div class="inactive-row">
         <li><span class="strong">Returned:</span> <%= data.keyboard_instance_returned_count %></li>
         </div>
-        <div class="list-row">
+        <div class="inactive-row">
           <li><span class="strong">Sold:</span> <%= data.keyboard_instance_sold_count %></li>
         </div>
-      <h2>Database:</h2>
-        <div class="list-row">
+      <h2 class="strong">Database:</h2>
+        <div class="inactive-row">
           <li><span class="strong">Keyboards:</span> <%= data.keyboard_count %></li>
           </div>
-        <div class="list-row">
+        <div class="inactive-row">
         <li><span class="strong">Brands:</span> <%= data.brand_count %></li>
         </div>
-        <div class="list-row">
+        <div class="inactive-row">
         <li><span class="strong">Switches:</span> <%= data.switch_count %></li>
         </div>
       </ul>
