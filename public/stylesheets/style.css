@@ -55,6 +55,9 @@ button {
 button:hover {
   cursor: pointer;
 }
+.error-page-container {
+  margin: 2rem;
+}
 .sidebar-nav {
   margin-top: 20px;
   padding: 0;
@@ -115,11 +118,23 @@ button:hover {
   margin: 1rem 0;
 }
 .list-row {
-  outline: 1px solid gray;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 3px solid #00d2d7;
   padding: 1rem;
   margin: 1rem 0;
   background-color: rgb(221, 220, 220);
   box-shadow: rgba(27, 31, 35, 0.1) 0 2px 0;
+}
+.list-row-top {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.inactive {
+  background-color: var(--background-color);
+  border-bottom: 1px solid gray;
 }
 .instance-status {
   font-size: 0.7rem;
@@ -148,10 +163,13 @@ button:hover {
 .header {
   margin-bottom: 1rem;
 }
+.header * h1 {
+  overflow-wrap: anywhere;
+}
 .headline {
   margin-bottom: 1rem;
 }
-.price {
+.headline-footnote {
   font-size: 1.1rem;
   font-style: italic;
 }
@@ -178,6 +196,9 @@ button:hover {
 .update:hover {
   background-color: #2c974b;
 }
+.error {
+  color: red;
+}
 .delete {
   background-color: red;
   border: 1px solid rgba(39, 44, 50, 0.15);
@@ -192,7 +213,37 @@ button:hover {
 .delete:hover {
   background-color: rgb(234, 2, 2);
 }
-.inline-id {
+.inline-footnote {
   font-style: italic;
   font-size: 0.75rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-control {
+  max-width: 500px;
+  margin-bottom: 0.5rem;
+}
+textarea {
+  resize: none;
+  height: 5rem;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+select {
+  font: inherit;
+  font-size: 1rem;
+  border: 1px solid gray;
+  background-color: white;
+}
+.nothing-found {
+  color: rgb(92, 92, 92);
+  font-style: italic;
 }

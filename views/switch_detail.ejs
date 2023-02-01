@@ -14,23 +14,31 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <div>
+    <div class="headline">
       <h1><%= keyboard_switch.display_name %></h1>
     </div>
-    <div>
+    <div class="description">
       <p><%= keyboard_switch.description %></p>
     </div>
-    <ul>
       <% if(!switch_instances){ %>
-      <p>These switches aren't available on any keyboards currently.</p>
-      <% } else{ %> <% switch_instances.forEach((instance) => { %>
-      <li>
-        <a href="<%= instance.url %>"><%= instance.keyboard.brand.display_name %> <%= instance.keyboard.name %></a>
-      </li>
-      <% }); %> <% } %>
-    </ul>
-    <p><a href="<%= keyboard_switch.url + '/update' %> ">Update switch</a></p>
-    <p><a href="<%=keyboard_switch.url + '/delete' %>">Delete switch</a></p>
+      <p class="nothing-found">These switches aren't available on any keyboards currently.</p>
+      <% } else{ %> 
+        <ul>
+        <% switch_instances.forEach((instance) => { %>
+          <a href="<%= instance.url %>" class="list-link">
+            <div class="list-row">
+            <li>
+            <%= instance.keyboard.brand.display_name %> <span class="strong"><%= instance.keyboard.name %></span> <span class="inline-footnote">($<%= instance.keyboard.price %>)</span>
+            </li>
+          </div>
+          </a>
+      <% }); %>
+        </ul>
+      <% } %>
+      <div class="detail-buttons-container">
+        <a href="<%= keyboard_switch.url + '/update' %> "><button class="update">Update switch</button></a>
+        <a href="<%=keyboard_switch.url + '/delete' %>"><button class="delete">Delete switch</button></a>
+      </div>
   </div>
 </body>
 

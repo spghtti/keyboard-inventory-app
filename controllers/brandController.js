@@ -28,12 +28,13 @@ exports.brand_detail = (req, res, next) => {
         Brand.findById(req.params.id).exec(callback);
       },
       brand_keyboards(callback) {
-        Keyboard.find({ brand: req.params.id }, 'name description').exec(
+        Keyboard.find({ brand: req.params.id }, 'name description price').exec(
           callback
         );
       },
     },
     (err, results) => {
+      console.log(results.brand_keyboards.length);
       if (err) {
         // Error in API usage.
         return next(err);

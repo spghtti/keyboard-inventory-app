@@ -13,19 +13,45 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <div>
-      <h1>ID: <%=keyboardinstance._id %></h1>
+    <div class="header">
+      <h1>Instance:<%=keyboardinstance._id %></h1>
     </div>
     <ul>
-     <li>Keyboard: <a href="<%= keyboardinstance.keyboard.url %>"><%= keyboardinstance.keyboard.name %></a></li>
-     <li>Switch: <a href="<%= keyboardinstance.keyboard_switch.url %>"> <%= keyboardinstance.keyboard_switch.display_name %></a></li>
-      <li><p>Status: <%= keyboardinstance.status  %> </p>
-      </li>
-      <li><p>Date sold: <%= keyboardinstance.date_sold ? keyboardinstance.date_sold_formatted : 'N/A' %>
-      </li>
+      <a href="<%= keyboardinstance.keyboard.url %>" class="list-link">
+        <div class="list-row">
+          <li><span class="strong">Keyboard:</span> <%= keyboardinstance.keyboard.name %></li>
+        </div>
+      </a>
+      <a href="<%= keyboardinstance.keyboard_switch.url %>" class="list-link">
+      <div class="list-row">
+         <li><span class="strong">Switch:</span> <%= keyboardinstance.keyboard_switch.display_name %></li>
+         </div>
+        </a>
+        <div class="list-row inactive">
+          <li><span class="strong">Status:</span>
+            <% if (keyboardinstance.status === 'In-stock') { %> 
+              <span class="instance-status in-stock"><%= keyboardinstance.status %></span>
+              <% } %> 
+              <% if (keyboardinstance.status === 'Returned') { %> 
+                <span class="instance-status returned"><%= keyboardinstance.status %></span>
+              <% } %> 
+              <% if (keyboardinstance.status === 'Sold') { %> 
+                <span class="instance-status sold"><%= keyboardinstance.status %></span>
+              <% } %> 
+          </li>
+          </div>
+          <% if (keyboardinstance.date_sold) { %> 
+          <div class="list-row inactive">
+          <li><span class="strong">Date sold:</span> <%= keyboardinstance.date_sold_formatted %>
+          </li>
+          </div>
+          <% } %>
+
     </ul>
-    <p><a href="<%= keyboardinstance.url + '/update' %> ">Update instance</a></p>
-    <p><a href="<%=keyboardinstance.url + '/delete' %>">Delete instance</a></p>
+    <div class="detail-buttons-container">
+      <a href="<%= keyboardinstance.url + '/update' %> "><button class="update">Update instance</button></a>
+      <a href="<%=keyboardinstance.url + '/delete' %>"><button class="delete">Delete instance</button></a>
+    </div>
   </div>
 </body>
 

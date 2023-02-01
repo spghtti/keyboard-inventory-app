@@ -14,31 +14,37 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <div>
+    <div class="header">
       <h1><%=brand.display_name %></h1>
-    </div>
-    <div>
       <% if(brand.origin !== 'false'){ %>
-      <p><%= brand.origin %></p>
+      <p class="headline-footnote"><%= brand.origin %></p>
       <% } %>
     </div>
     <div>
       <% if(brand.description){ %>
-      <p><%= brand.description %></p>
+      <p class="description"><%= brand.description %></p>
       <% } %>
     </div>
-    <ul>
-      <% if(!brand_keyboards){ %>
-      <p>This brand doesn't have any keyboards.</p>
-      <% } else{ %> <% brand_keyboards.forEach((keyboard) => { %>
-      <li>
-        <a href="<%= keyboard.url %>"> <%= keyboard.name %></a>
-        <p><%= keyboard.description !== 'false' ? keyboard.description : 'No description' %></p>
-      </li>
-      <% }); %> <% } %>
-    </ul>
-    <p><a href="<%= brand.url + '/update' %> ">Update brand</a></p>
-    <p><a href="<%=brand.url + '/delete' %>">Delete brand</a></p>
+    <div class="detail-buttons-container">
+      <a href="<%= brand.url + '/update' %> "><button class="update">Update brand</button> </a>
+      <a href="<%=brand.url + '/delete' %>"><button class="delete">Delete brand</button></a>
+    </div>
+    <h2 class="headline">Keyboards:</h2>
+      <% if(brand_keyboards.length < 1){ %>
+      <p class="nothing-found">This brand doesn't have any keyboards.</p>
+      <% } else{ %> 
+      <ul>
+        <% brand_keyboards.forEach((keyboard) => { %>
+          <a href="<%= keyboard.url %>" class="list-link">
+          <div class="list-row">
+            <li>
+               <span class="strong"><%= keyboard.name %></span> <span class="inline-footnote">($<%= keyboard.price %>)</span>
+            </li>
+          </div>
+        </a>
+      <% }); %>
+      </ul>
+      <% } %>
   </div>
 </body>
 

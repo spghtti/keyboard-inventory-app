@@ -1,3 +1,26 @@
-<h1>We can't find that page...</h1>
-<h2>Error <%= error.status %>: <%= message %></h2>
 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/stylesheets/reset.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="shortcut icon" href="#" />
+  <meta name="description" content="">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Document</title>
+</head>
+<body>
+  <main>
+    <div class="error-page-container">
+    <h1 class="headline">Oops, something went wrong...</h1>
+    <div class="detail-buttons-container">
+    <a href="/inventory"><button class="update">Go to homepage</button></a>
+    </div>
+    <p class="error" style="font-size: .8rem;"><%= error.status %> <%= message %></p>
+</div>
+  </main>
+</body>
+</html>

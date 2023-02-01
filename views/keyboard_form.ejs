@@ -14,7 +14,7 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <h1><%= title %></h1>
+    <h1 class="header"><%= title %></h1>
     <form method="POST" action="">
         <div class="form-group">
             <label for="name">Name:</label>
@@ -37,12 +37,13 @@
             <label for="price">Price</label>
             <input type="number" id="price" class="form-control" name="price" value="<%= locals.keyboard === undefined ? '' : locals.keyboard.price %>">
       </div>
+      <button class="update" type="submit">Submit</button>
+
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
         <% if( locals.errors) { %>
             <ul>
                 <% errors.forEach((error) => { %>
-                    <li><%= error.msg %></li>
+                    <li class="error"><%= error.msg %></li>
                     <% }); %>
             </ul> 
             <% } %>

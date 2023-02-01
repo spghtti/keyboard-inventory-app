@@ -17,7 +17,6 @@
     <div>
       <h1><%= title %></h1>
     </div>
-
       <% if(!keyboardinstance_list){ %>
       <p>No instances available</p>
       <% } else{ %>
@@ -26,6 +25,7 @@
       <a href="<%= instance.url %>" class="list-link">
       <div class="list-row">
       <li>
+        <div class="list-row-top">
         <span><%= instance.keyboard.brand.display_name %></span> <span class="strong"><%= instance.keyboard.name %></span>
         <% if (instance.status === 'In-stock') { %> 
         <span class="instance-status in-stock"><%= instance.status %></span>
@@ -36,6 +36,10 @@
         <% if (instance.status === 'Sold') { %> 
           <span class="instance-status sold"><%= instance.status %></span>
         <% } %> 
+        </div>
+        <div class="list-row-bottom">
+        <span class="inline-footnote">(ID: <%= instance._id %>) </span>
+        </div>
       </li>
     </div>
   </a>
