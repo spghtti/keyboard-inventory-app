@@ -17,15 +17,21 @@
     <div>
       <h1><%= title %></h1>
     </div>
-    <ul>
       <% if(!switch_list){ %>
       <p>No switches available</p>
-      <% } else{ %> <% switch_list.forEach((keyboardSwitch) => { %>
-      <li>
-        <a href="<%= keyboardSwitch.url %>"><%= keyboardSwitch.display_name %></a>
-      </li>
-      <% }); %> <% } %>
-    </ul>
+      <% } else{ %> 
+      <ul>
+        <% switch_list.forEach((keyboardSwitch) => { %>
+        <a href="<%= keyboardSwitch.url %>" class="list-link">
+          <div class="list-row">
+            <li>
+              <span class="strong"><%= keyboardSwitch.display_name %></span>
+            </li>
+          </div>
+        </a>
+      <% }); %>
+      </ul>
+      <% } %>
   </div>
 </body>
 

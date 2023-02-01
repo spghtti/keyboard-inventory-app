@@ -17,15 +17,21 @@
     <div>
       <h1><%= title %></h1>
     </div>
-    <ul>
       <% if(!brand_list){ %>
       <p>No brands available</p>
-      <% } else{ %> <% brand_list.forEach((brand) => { %>
-      <li>
-        <a href="<%= brand.url %>"><%= brand.display_name %></a> <span><%= brand.origin != 'false' ? brand.origin : '' %></span>
-      </li>
-      <% }); %> <% } %>
-    </ul>
+      <% } else{ %> 
+      <ul>
+        <% brand_list.forEach((brand) => { %>
+          <a href="<%= brand.url %>" class="list-link">
+          <div class="list-row">
+            <li>
+              <span class="strong"><%= brand.display_name %></span>
+            </li>
+          </div>
+          </a> 
+      <% }); %>
+      </ul>
+      <% } %>
   </div>
 </body>
 

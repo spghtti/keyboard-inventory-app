@@ -8,7 +8,12 @@ const { body, validationResult } = require('express-validator');
 
 // Display list of all Keyboardinstances.
 exports.keyboardinstance_list = (req, res, next) => {
-  KeyboardInstance.find()
+  KeyboardInstance.find({
+    sort: {
+      // prettier-ignore
+      'status': 1,
+    },
+  })
     .populate({
       path: 'keyboard',
       model: 'Keyboard',
@@ -23,6 +28,18 @@ exports.keyboardinstance_list = (req, res, next) => {
       if (err) {
         return next(err);
       }
+      list_keyboardinstances.sort(function (a, b) {
+        let statusA = a.status;
+        let statusB = b.status;
+        let brandA = a.keyboard.brand.name;
+        let brandB = b.keyboard.brand.name;
+
+        if (statusA == statusB) {
+          return brandA < brandB ? -1 : brandA < brandB ? 1 : 0;
+        } else {
+          return statusA < statusB ? -1 : 1;
+        }
+      });
       // Successful, so render
       res.render('instance_list', {
         title: 'Keyboard Instance List',

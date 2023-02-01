@@ -13,11 +13,14 @@ exports.index = (req, res) => {
       keyboard_count(callback) {
         Keyboard.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
       },
-      keyboard_instance_count(callback) {
-        KeyboardInstance.countDocuments({}, callback);
-      },
       keyboard_instance_available_count(callback) {
         KeyboardInstance.countDocuments({ status: 'In-stock' }, callback);
+      },
+      keyboard_instance_returned_count(callback) {
+        KeyboardInstance.countDocuments({ status: 'Returned' }, callback);
+      },
+      keyboard_instance_sold_count(callback) {
+        KeyboardInstance.countDocuments({ status: 'Sold' }, callback);
       },
       brand_count(callback) {
         Brand.countDocuments({}, callback);
@@ -38,16 +41,21 @@ exports.index = (req, res) => {
 
 // Display list of all keyboards.
 exports.keyboard_list = (req, res, next) => {
-  Keyboard.find({}, 'name brand')
-    .sort({ name: 1 })
+  Keyboard.find({})
     .populate('brand')
+    .sort({ 'brand.name': 1 })
     .exec(function (err, list_keyboards) {
       if (err) {
         return next(err);
       }
+      list_keyboards.sort(function (a, b) {
+        let keyboardA = a.brand.name;
+        let keyboardB = b.brand.name;
+        return keyboardA < keyboardB ? -1 : keyboardA > keyboardB ? 1 : 0;
+      });
       //Successful, so render
       res.render('keyboard_list', {
-        title: 'Keyboard List',
+        title: 'All Keyboards',
         keyboard_list: list_keyboards,
       });
     });

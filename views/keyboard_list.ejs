@@ -13,17 +13,22 @@
     <%- include('sidebar') -%>
     <div class="wrapper">
       <div><h1><%= title %></h1></div>
-      <ul>
         <% if(!keyboard_list){ %>
         <p>No keyboards available</p>
-        <% } else{ %> <% keyboard_list.forEach((keyboard) => { %>
-        <li>
-          <a href="<%= keyboard.url %>"
-            ><%= keyboard.brand.display_name %> <%= keyboard.name %></a
-          >
-        </li>
-        <% }); %> <% } %>
-      </ul>
+        <% } else{ %>
+        <ul>  
+          <% keyboard_list.forEach((keyboard) => { %>
+            <a href="<%= keyboard.url %>" class="list-link">
+            <div class="list-row">
+            <li>
+              <span><%= keyboard.brand.display_name %></span> 
+              <span class="strong"><%= keyboard.name %></span>
+            </li>
+          </div>
+        </a>
+        <% }); %>
+        </ul>
+        <% } %>
     </div>
   </body>
 </html>

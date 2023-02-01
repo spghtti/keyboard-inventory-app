@@ -17,19 +17,31 @@
     <div>
       <h1><%= title %></h1>
     </div>
-    <ul>
+
       <% if(!keyboardinstance_list){ %>
       <p>No instances available</p>
       <% } else{ %>
+        <ul>
       <% keyboardinstance_list.forEach((instance) => { %>
+      <a href="<%= instance.url %>" class="list-link">
+      <div class="list-row">
       <li>
-        <a href="<%= instance.url %>"><%= instance.keyboard.brand.display_name %> <%= instance.keyboard.name %> </a>: <%= instance.status %>
-        <% if (instance.status === 'Sold' && instance.date_sold) { %>
-        (<%= instance.date_sold_formatted %>)
-        <% } %>
+        <span><%= instance.keyboard.brand.display_name %></span> <span class="strong"><%= instance.keyboard.name %></span>
+        <% if (instance.status === 'In-stock') { %> 
+        <span class="instance-status in-stock"><%= instance.status %></span>
+        <% } %> 
+        <% if (instance.status === 'Returned') { %> 
+          <span class="instance-status returned"><%= instance.status %></span>
+        <% } %> 
+        <% if (instance.status === 'Sold') { %> 
+          <span class="instance-status sold"><%= instance.status %></span>
+        <% } %> 
       </li>
-      <% }); %> <% } %>
+    </div>
+  </a>
+      <% }); %>
     </ul>
+      <% } %>
   </div>
 </body>
 
