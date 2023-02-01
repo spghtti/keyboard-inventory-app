@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/reset.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/javascripts/index.js" defer></script>
     <link rel="shortcut icon" href="#" />
     <title><%= title %></title>
   </head>
@@ -15,8 +16,10 @@
       <div>
         <h1><%= title %></h1>
         <p>
-          This is a basic Mongo CRUD app for a fake store selling keyboards.
-          Below, you'll find a dynamic count of what's in stock.
+          This is a CRUD app for a fictional keyboard store used to track inventory. You can see what's in-stock; find info about brands, boards, or switches; mark keyboards as sold; and more. 
+          <br>
+          <br>
+          It's built with Mongo, Node, Express and EJS. 
         </p>
       </div>
       <% if(error){ %>
@@ -30,7 +33,6 @@
         <li>Brands: <%= data.brand_count %></li>
         <li>Switches: <%= data.switch_count %></li>
       </ul>
-
       <% } %>
     </div>
   </body>

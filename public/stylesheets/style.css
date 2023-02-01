@@ -1,14 +1,29 @@
-html {
+@font-face {
+  font-family: Roboto;
+  src: url(/fonts/Roboto-Regular.ttf);
 }
-body {
-  display: flex;
-  padding: 50px;
+@font-face {
+  font-family: Ubuntu;
+  src: url(/fonts/Ubuntu-Regular.ttf);
+}
+html {
+  background-color: rgb(236, 236, 236);
+  font-size: 16px;
+  font-family: 'Roboto', Calibri, Tahoma, sans-serif;
 }
 h1 {
   font-size: 2rem;
+  font-weight: 600;
+  font-family: 'Ubuntu', Calibri, Tahoma, sans-serif;
 }
 h2 {
   font-size: 1.5rem;
+  font-weight: 600;
+  font-family: 'Ubuntu', Calibri, Tahoma, sans-serif;
+}
+h3 {
+  font-size: 1.25rem;
+  font-family: 'Ubuntu', Calibri, Tahoma, sans-serif;
 }
 .sidebar-nav {
   margin-top: 20px;
@@ -20,15 +35,49 @@ h2 {
   padding: 1rem;
   left: 0;
 }
-.row {
-  width: 50px;
-}
-.sidebar {
-  width: 350px;
-  position: fixed;
-  height: 100vh;
-}
 .wrapper {
   display: flex;
   flex-direction: column;
+  padding: 3rem 2rem 0 2rem;
+  margin-left: 175px;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 175px;
+  height: 100vh;
+  overflow-x: hidden;
+  position: fixed;
+  z-index: 1;
+  background-color: #111;
+  color: white;
+  padding: 10px 0;
+}
+.logo-container {
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+}
+.logo {
+  width: 100px;
+  height: 100px;
+}
+.sidebar-headline {
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.sidebar-group {
+  padding: 0 0 1rem 1rem;
+}
+.sidebar-group * a {
+  color: #818181;
+  text-decoration: none;
+}
+.sidebar-group * a:hover {
+  text-decoration: underline;
+}
+.sidebar-link {
+  margin-bottom: 5px;
 }

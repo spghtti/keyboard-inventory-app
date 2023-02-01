@@ -28,7 +28,7 @@ exports.index = (req, res) => {
     },
     (err, results) => {
       res.render('index', {
-        title: 'Keyboard Inventory',
+        title: 'Keyboard Inventory App',
         error: err,
         data: results,
       });

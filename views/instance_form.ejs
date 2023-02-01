@@ -57,9 +57,10 @@
             </select>
             <% if (locals.keyboardinstance) { %>
                 <label for="date_sold">Date when sold:</label>
-                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= keyboardinstance.date_sold %>">
                 <% if (locals.keyboardinstance.date_sold) { %>
                       <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : ''%>" %>">
+                    <% } else { %>
+                        <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= keyboardinstance.date_sold %>">
                     <% } %>
             <% } %>
         </div>
