@@ -4,7 +4,6 @@ const async = require('async');
 
 const { body, validationResult } = require('express-validator');
 
-// Display list of all Keyboardswitch.
 exports.keyboardswitch_list = (req, res) => {
   KeyboardSwitch.find()
     .sort([['name', 'ascending']])
@@ -12,7 +11,6 @@ exports.keyboardswitch_list = (req, res) => {
       if (err) {
         return next(err);
       }
-      //Successful, so render
       res.render('switch_list', {
         title: 'Switch List',
         switch_list: list_switches,
@@ -20,7 +18,6 @@ exports.keyboardswitch_list = (req, res) => {
     });
 };
 
-// Display detail page for a specific Keyboardswitch.
 exports.keyboardswitch_detail = (req, res, next) => {
   async.parallel(
     {
@@ -48,18 +45,15 @@ exports.keyboardswitch_detail = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard_switch == null) {
-        // No results.
         const err = new Error('Switch not found');
         err.status = 404;
         return next(err);
       }
       if (results.switch_instances == null) {
-        // No results.
         const err = new Error('Switch Instances not found');
         err.status = 404;
         return next(err);
       }
-      // Successful, so render
       res.render('switch_detail', {
         title: 'Switch Detail',
         keyboard_switch: results.keyboard_switch,
@@ -69,16 +63,13 @@ exports.keyboardswitch_detail = (req, res, next) => {
   );
 };
 
-// Display Keyboardswitch create form on GET.
 exports.keyboardswitch_create_get = (req, res, next) => {
   res.render('switch_form', {
     title: 'Create New Switch',
   });
 };
 
-// Handle Keyboardswitch create on POST.
 exports.keyboardswitch_create_post = [
-  // Validate and sanitize the name field.
   body('name', 'Switch name must be at least 3 characters')
     .trim()
     .isLength({ min: 3 })
@@ -88,12 +79,9 @@ exports.keyboardswitch_create_post = [
     .trim()
     .escape(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a genre object with escaped and trimmed data.
     const keyboard_switch = new KeyboardSwitch({
       name: req.body.name.toLowerCase(),
       display_name: req.body.name,
@@ -101,7 +89,6 @@ exports.keyboardswitch_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values/error messages.
       res.render('switch_form', {
         title: 'Create New Switch',
         keyboard_switch,
@@ -109,8 +96,6 @@ exports.keyboardswitch_create_post = [
       });
       return;
     } else {
-      // Data from form is valid.
-      // Check if Switch with same name already exists.
       KeyboardSwitch.findOne({ name: req.body.name.toLowerCase() }).exec(
         (err, found_switch) => {
           if (err) {
@@ -118,14 +103,12 @@ exports.keyboardswitch_create_post = [
           }
 
           if (found_switch) {
-            // Switch exists, redirect to its detail page.
             res.redirect(found_switch.url);
           } else {
             keyboard_switch.save((err) => {
               if (err) {
                 return next(err);
               }
-              // Switch saved. Redirect to switch detail page.
               res.redirect(keyboard_switch.url);
             });
           }
@@ -134,7 +117,6 @@ exports.keyboardswitch_create_post = [
     }
   },
 ];
-// Display Keyboardswitch delete form on GET.
 exports.keyboardswitch_delete_get = (req, res, next) => {
   async.parallel(
     {
@@ -161,10 +143,8 @@ exports.keyboardswitch_delete_get = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard_switch == null) {
-        // No results.
         res.redirect('/inventory/switches');
       }
-      // Successful, so render.
       res.render('switch_delete', {
         title: 'Delete a Switch',
         keyboard_switch: results.keyboard_switch,
@@ -174,7 +154,6 @@ exports.keyboardswitch_delete_get = (req, res, next) => {
   );
 };
 
-// Handle Keyboardswitch delete on POST.
 exports.keyboardswitch_delete_post = (req, res, next) => {
   async.parallel(
     {
@@ -202,9 +181,7 @@ exports.keyboardswitch_delete_post = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      // Success
       if (results.switch_instances.length > 0) {
-        // Keyboard has books. Render in same way as for GET route.
         res.render('switch_delete', {
           title: 'Delete a Switch',
           keyboard_switch: results.keyboard_switch,
@@ -212,21 +189,17 @@ exports.keyboardswitch_delete_post = (req, res, next) => {
         });
         return;
       }
-      // Author has no books. Delete object and redirect to the list of authors.
       KeyboardSwitch.findByIdAndRemove(req.body.keyboard_switch_id, (err) => {
         if (err) {
           return next(err);
         }
-        // Success - go to author list
         res.redirect('/inventory/switches');
       });
     }
   );
 };
 
-// Display Keyboardswitch update form on GET.
 exports.keyboardswitch_update_get = (req, res, next) => {
-  // Get book, authors and genres for form.
   async.parallel(
     {
       keyboard_switch(callback) {
@@ -238,7 +211,6 @@ exports.keyboardswitch_update_get = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard_switch == null) {
-        // No results.
         const err = new Error('Switch not found');
         err.status = 404;
         return next(err);
@@ -251,9 +223,7 @@ exports.keyboardswitch_update_get = (req, res, next) => {
   );
 };
 
-// Handle Keyboardswitch update on POST.
 exports.keyboardswitch_update_post = [
-  // Validate and sanitize fields.
   body('name', 'Name must be between 3 and 100 characters.')
     .trim()
     .isLength({ min: 3, max: 100 })
@@ -264,23 +234,17 @@ exports.keyboardswitch_update_post = [
     .optional({ checkFalsy: true })
     .escape(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a Book object with escaped/trimmed data and old id.
     const keyboard_switch = new KeyboardSwitch({
       name: req.body.name.toLowerCase(),
       display_name: req.body.name,
       description: req.body.description,
-      _id: req.params.id, //This is required, or a new ID will be assigned!
+      _id: req.params.id,
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all authors and genres for form
       res.render('switch_form', {
         title: 'Update Switch',
         keyboard_switch,
@@ -289,7 +253,6 @@ exports.keyboardswitch_update_post = [
       return;
     }
 
-    // Data from form is valid. Update the record.
     KeyboardSwitch.findByIdAndUpdate(
       req.params.id,
       keyboard_switch,
@@ -299,7 +262,6 @@ exports.keyboardswitch_update_post = [
           return next(err);
         }
 
-        // Successful: redirect to book detail page.
         res.redirect(theswitch.url);
       }
     );

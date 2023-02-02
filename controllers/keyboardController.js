@@ -11,7 +11,7 @@ exports.index = (req, res) => {
   async.parallel(
     {
       keyboard_count(callback) {
-        Keyboard.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
+        Keyboard.countDocuments({}, callback);
       },
       keyboard_instance_available_count(callback) {
         KeyboardInstance.countDocuments({ status: 'In-stock' }, callback);
@@ -39,7 +39,6 @@ exports.index = (req, res) => {
   );
 };
 
-// Display list of all keyboards.
 exports.keyboard_list = (req, res, next) => {
   Keyboard.find({})
     .populate('brand')
@@ -53,7 +52,6 @@ exports.keyboard_list = (req, res, next) => {
         let keyboardB = b.brand.name;
         return keyboardA < keyboardB ? -1 : keyboardA > keyboardB ? 1 : 0;
       });
-      //Successful, so render
       res.render('keyboard_list', {
         title: 'All Keyboards',
         keyboard_list: list_keyboards,
@@ -61,7 +59,6 @@ exports.keyboard_list = (req, res, next) => {
     });
 };
 
-// Display detail page for a specific keyboard.
 exports.keyboard_detail = (req, res, next) => {
   async.parallel(
     {
@@ -76,17 +73,14 @@ exports.keyboard_detail = (req, res, next) => {
       },
     },
     (err, results) => {
-      console.log(results);
       if (err) {
         return next(err);
       }
       if (results.keyboard == null) {
-        // No results.
         const err = new Error('Keyboard not found');
         err.status = 404;
         return next(err);
       }
-      // Successful, so render.
       res.render('keyboard_detail', {
         title: results.keyboard.name,
         keyboard: results.keyboard,
@@ -96,9 +90,7 @@ exports.keyboard_detail = (req, res, next) => {
   );
 };
 
-// Display keyboard create form on GET.
 exports.keyboard_create_get = (req, res, next) => {
-  // Get all brands and switches, which we can use for adding to our book.
   async.parallel(
     {
       brands(callback) {
@@ -117,10 +109,7 @@ exports.keyboard_create_get = (req, res, next) => {
   );
 };
 
-// Handle keyboard create on POST.
 exports.keyboard_create_post = [
-  // Convert the switches to an array.
-  // Validate and sanitize fields.
   body('name', 'Name must be 3-100 characters.')
     .trim()
     .isLength({ min: 3, max: 100 })
@@ -140,12 +129,9 @@ exports.keyboard_create_post = [
     .isInt({ min: 1 })
     .withMessage('Price must be at least $1')
     .escape(),
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a Keyboard object with escaped and trimmed data.
     const keyboard = new Keyboard({
       name: req.body.name,
       brand: req.body.brand,
@@ -154,9 +140,6 @@ exports.keyboard_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all brands and switches for form.
       async.parallel(
         {
           brands(callback) {
@@ -178,18 +161,15 @@ exports.keyboard_create_post = [
       return;
     }
 
-    // Data from form is valid. Save book.
     keyboard.save((err) => {
       if (err) {
         return next(err);
       }
-      // Successful: redirect to new book record.
       res.redirect(keyboard.url);
     });
   },
 ];
 
-// Display keyboard delete form on GET.
 exports.keyboard_delete_get = (req, res, next) => {
   async.parallel(
     {
@@ -213,15 +193,12 @@ exports.keyboard_delete_get = (req, res, next) => {
       },
     },
     (err, results) => {
-      console.log(results);
       if (err) {
         return next(err);
       }
       if (results.keyboard == null) {
-        // No results.
         res.redirect('/inventory/keyboards');
       }
-      // Successful, so render.
       res.render('keyboard_delete', {
         title: 'Delete a Keyboard',
         keyboard: results.keyboard,
@@ -231,7 +208,6 @@ exports.keyboard_delete_get = (req, res, next) => {
   );
 };
 
-// Handle keyboard delete on POST.
 exports.keyboard_delete_post = (req, res, next) => {
   async.parallel(
     {
@@ -255,14 +231,11 @@ exports.keyboard_delete_post = (req, res, next) => {
       },
     },
     (err, results) => {
-      console.log('!!!!!');
-      console.log(results.keyboard_instances);
       if (err) {
         return next(err);
       }
       // Success
       if (results.keyboard_instances.length > 0) {
-        // Keyboard has books. Render in same way as for GET route.
         res.render('switch_delete', {
           title: 'Delete a Switch',
           keyboard: results.keyboard,
@@ -270,21 +243,17 @@ exports.keyboard_delete_post = (req, res, next) => {
         });
         return;
       }
-      // Author has no books. Delete object and redirect to the list of authors.
       Keyboard.findByIdAndRemove(req.body.keyboard_id, (err) => {
         if (err) {
           return next(err);
         }
-        // Success - go to author list
         res.redirect('/inventory/keyboards');
       });
     }
   );
 };
 
-// Display keyboard update form on GET.
 exports.keyboard_update_get = (req, res, next) => {
-  // Get book, authors and genres for form.
   async.parallel(
     {
       keyboard(callback) {
@@ -299,7 +268,6 @@ exports.keyboard_update_get = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard == null) {
-        // No results.
         const err = new Error('Keyboard not found');
         err.status = 404;
         return next(err);
@@ -313,9 +281,7 @@ exports.keyboard_update_get = (req, res, next) => {
   );
 };
 
-// Handle keyboard update on POST.
 exports.keyboard_update_post = [
-  // Validate and sanitize fields.
   body('name', 'Name must be 3-100 characters.')
     .trim()
     .isLength({ min: 3, max: 100 })
@@ -336,24 +302,18 @@ exports.keyboard_update_post = [
     .withMessage('Price must be at least $1')
     .escape(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a Book object with escaped/trimmed data and old id.
     const keyboard = new Keyboard({
       name: req.body.name,
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
-      _id: req.params.id, //This is required, or a new ID will be assigned!
+      _id: req.params.id,
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all authors and genres for form.
       async.parallel(
         {
           brands(callback) {
@@ -364,7 +324,6 @@ exports.keyboard_update_post = [
           if (err) {
             return next(err);
           }
-          // Mark our selected genres
           res.render('keyboard_form', {
             title: 'Update Keyboard',
             brands: results.brands,
@@ -376,7 +335,6 @@ exports.keyboard_update_post = [
       return;
     }
 
-    // Data from form is valid. Update the record.
     Keyboard.findByIdAndUpdate(
       req.params.id,
       keyboard,
@@ -386,7 +344,6 @@ exports.keyboard_update_post = [
           return next(err);
         }
 
-        // Successful: redirect to book detail page.
         res.redirect(thekeyboard.url);
       }
     );

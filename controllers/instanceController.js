@@ -6,7 +6,6 @@ const async = require('async');
 
 const { body, validationResult } = require('express-validator');
 
-// Display list of all Keyboardinstances.
 exports.keyboardinstance_list = (req, res, next) => {
   KeyboardInstance.find({
     sort: {
@@ -40,7 +39,6 @@ exports.keyboardinstance_list = (req, res, next) => {
           return statusA < statusB ? -1 : 1;
         }
       });
-      // Successful, so render
       res.render('instance_list', {
         title: 'Keyboard Instance List',
         keyboardinstance_list: list_keyboardinstances,
@@ -48,7 +46,6 @@ exports.keyboardinstance_list = (req, res, next) => {
     });
 };
 
-// Display detail page for a specific Keyboardinstance.
 exports.keyboardinstance_detail = (req, res, next) => {
   KeyboardInstance.findById(req.params.id)
     .populate('keyboard')
@@ -58,13 +55,10 @@ exports.keyboardinstance_detail = (req, res, next) => {
         return next(err);
       }
       if (keyboardinstance == null) {
-        // No results.
         const err = new Error('Instance not found');
         err.status = 404;
         return next(err);
       }
-      console.log(keyboardinstance.keyboard_switch);
-      // Successful, so render.
       res.render('instance_detail', {
         title: `Keyboard: ${keyboardinstance.keyboard.name}`,
         keyboardinstance,
@@ -72,7 +66,6 @@ exports.keyboardinstance_detail = (req, res, next) => {
     });
 };
 
-// Display Keyboardinstance create form on GET.
 exports.keyboardinstance_create_get = (req, res, next) => {
   Keyboard.find({}, 'name')
     .populate('brand')
@@ -93,9 +86,7 @@ exports.keyboardinstance_create_get = (req, res, next) => {
     });
 };
 
-// Handle Keyboardinstance create on POST.
 exports.keyboardinstance_create_post = [
-  // Validate and sanitize fields.
   body('keyboard', 'Keyboard must be specified')
     .trim()
     .isLength({ min: 3 })
@@ -107,12 +98,9 @@ exports.keyboardinstance_create_post = [
     .isISO8601()
     .toDate(),
 
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
-    // Create a BookInstance object with escaped and trimmed data.
     const keyboardinstance = new KeyboardInstance({
       keyboard: req.body.keyboard,
       status: req.body.status,
@@ -121,7 +109,6 @@ exports.keyboardinstance_create_post = [
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values and error messages.
       Keyboard.find({}, 'display_name').exec(function (err, keyboards) {
         if (err) {
           return next(err);
@@ -144,18 +131,15 @@ exports.keyboardinstance_create_post = [
       });
     }
 
-    // Data from form is valid.
     keyboardinstance.save((err) => {
       if (err) {
         return next(err);
       }
-      // Successful: redirect to new record.
       res.redirect(keyboardinstance.url);
     });
   },
 ];
 
-// Display Keyboardinstance delete form on GET.
 exports.keyboardinstance_delete_get = (req, res, next) => {
   async.parallel(
     {
@@ -168,10 +152,8 @@ exports.keyboardinstance_delete_get = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard_instance == null) {
-        // No results.
         res.redirect('/inventory/instances');
       }
-      // Successful, so render.
       res.render('instance_delete', {
         title: 'Delete an Instance',
         keyboard_instance: results.keyboard_instance,
@@ -180,7 +162,6 @@ exports.keyboardinstance_delete_get = (req, res, next) => {
   );
 };
 
-// Handle Keyboardinstance delete on POST.
 exports.keyboardinstance_delete_post = (req, res, next) => {
   async.parallel(
     {
@@ -192,14 +173,12 @@ exports.keyboardinstance_delete_post = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      // Success
       KeyboardInstance.findByIdAndRemove(
         req.body.keyboard_instance_id,
         (err) => {
           if (err) {
             return next(err);
           }
-          // Success - go to full list
           res.redirect('/inventory/instances');
         }
       );
@@ -207,9 +186,7 @@ exports.keyboardinstance_delete_post = (req, res, next) => {
   );
 };
 
-// Display Keyboardinstance update form on GET.
 exports.keyboardinstance_update_get = (req, res, next) => {
-  // Get book, authors and genres for form.
   async.parallel(
     {
       keyboard_instance(callback) {
@@ -230,7 +207,6 @@ exports.keyboardinstance_update_get = (req, res, next) => {
         return next(err);
       }
       if (results.keyboard_instance == null) {
-        // No results.
         const err = new Error('Instance not found');
         err.status = 404;
         return next(err);
@@ -248,9 +224,7 @@ exports.keyboardinstance_update_get = (req, res, next) => {
   );
 };
 
-// Handle keyboardinstance update on POST.
 exports.keyboardinstance_update_post = [
-  // Validate and sanitize fields.
   body('keyboard', 'Keyboard must be specified')
     .trim()
     .isLength({ min: 3 })
@@ -261,26 +235,20 @@ exports.keyboardinstance_update_post = [
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
-  // Process request after validation and sanitization.
   (req, res, next) => {
-    // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     const date_sold = req.body.status !== 'Sold' ? '' : req.body.date_sold;
 
-    // Create a Book object with escaped/trimmed data and old id.
     const keyboardinstance = new KeyboardInstance({
       keyboard: req.body.keyboard,
       status: req.body.status,
       keyboard_switch: req.body.keyboard_switch,
       date_sold,
-      _id: req.params.id, //This is required, or a new ID will be assigned!
+      _id: req.params.id,
     });
 
     if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
-
-      // Get all authors and genres for form.
       async.parallel(
         {
           keyboard_instance(callback) {
@@ -316,7 +284,6 @@ exports.keyboardinstance_update_post = [
       return;
     }
 
-    // Data from form is valid. Update the record.
     KeyboardInstance.findByIdAndUpdate(
       req.params.id,
       keyboardinstance,
@@ -326,7 +293,6 @@ exports.keyboardinstance_update_post = [
           return next(err);
         }
 
-        // Successful: redirect to book detail page.
         res.redirect(theinstance.url);
       }
     );
