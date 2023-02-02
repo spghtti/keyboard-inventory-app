@@ -109,11 +109,22 @@ exports.keyboardinstance_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
+    let date_sold = req.body.date_sold;
+
+    if (req.body.status === 'Sold') {
+      let str = [...req.body.date_sold.toISOString()];
+      let offsetHours = date_sold.getTimezoneOffset() / 60;
+      str[str.indexOf('T') + 2] = String(offsetHours);
+      date_sold = str.join('');
+    } else {
+      date_sold = '';
+    }
+
     const keyboardinstance = new KeyboardInstance({
       keyboard: req.body.keyboard,
       status: req.body.status,
       keyboard_switch: req.body.keyboard_switch,
-      date_sold: req.body.date_sold,
+      date_sold,
     });
 
     if (!errors.isEmpty()) {
