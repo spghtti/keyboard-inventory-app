@@ -14,27 +14,39 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
+    <div class="header">
     <h1><%= title %></h1>
     <% if (locals.switch_instances.length) { %>
     <p class="error">You must delete a switch's instances before deleting the switch.</p>
+    </div>
     <div>
         <h3>Instances:</h3>
         <ul>
             <% switch_instances.forEach((instance) => { %> 
+              <a href="<%= instance.url %>" class="list-link">
+                <div class="list-row">
                 <li>
-                    <%= instance.keyboard.brand.display_name %> <%= instance.keyboard.name %> -- <%= instance.keyboard_switch.display_name %> (ID: <a href="<%= instance.url %>"><%= instance._id %></a>)
+                  <div class="list-row-top">
+                    <%= instance.keyboard.brand.display_name %> <span class="strong"><%= instance.keyboard.name %></span> <%= instance.keyboard_switch.display_name %>
+                  </div>
+                    <span class="inline-footnote"> ID: <%= instance._id %></span>
                   </li>
+                </div>
+                </a>
             <% })  %> 
         </ul>
     </div> 
     <% } else { %>
-        <p>Do you really want to delete this switch?</p>
+        <p class="description">Do you really want to delete this switch?</p>
         <form method="POST" action="">
             <div class="form-group">
+              <div class="detail-buttons-container">
                 <input id="keyboard_switch_id"class='form-control' type="hidden" name="keyboard_switch_id" required="true" value="<%= keyboard_switch._id %>">
-                <button class="btn btn-primary" type="submit">Delete</button>
+                <button class="delete" type="submit">Delete</button>
+                </div>
             </div>
         </form>
+        <a href="<%= keyboard_switch.url  %>" class="text-link">Take me back!</a>
         <% } %> 
   </div>
 </body>

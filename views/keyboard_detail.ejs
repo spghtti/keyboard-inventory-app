@@ -52,7 +52,7 @@
     </ul>
     </div>
     <h2>Available Inventory:</h2>
-      <% if(!keyboard_instances){ %>
+      <% if(keyboard_instances.length < 1 ){ %>
       <p class="nothing-found">These keyboards aren't available currently.</p>
       <% } else{ %> 
       <ul>

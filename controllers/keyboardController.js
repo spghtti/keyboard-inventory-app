@@ -76,6 +76,7 @@ exports.keyboard_detail = (req, res, next) => {
       },
     },
     (err, results) => {
+      console.log(results);
       if (err) {
         return next(err);
       }
@@ -207,10 +208,12 @@ exports.keyboard_delete_get = (req, res, next) => {
               },
             ],
           })
+          .populate('keyboard_switch')
           .exec(callback);
       },
     },
     (err, results) => {
+      console.log(results);
       if (err) {
         return next(err);
       }
@@ -233,12 +236,10 @@ exports.keyboard_delete_post = (req, res, next) => {
   async.parallel(
     {
       keyboard(callback) {
-        Keyboard.findById(req.body.keyboard_id).exec(callback);
+        Keyboard.findById(req.params.id).exec(callback);
       },
       keyboard_instances(callback) {
-        KeyboardInstance.find({
-          keyboard_switch: req.body.keyboard_id,
-        })
+        KeyboardInstance.find({ keyboard: req.params.id })
           .populate({
             path: 'keyboard',
             model: 'Keyboard',
@@ -249,10 +250,13 @@ exports.keyboard_delete_post = (req, res, next) => {
               },
             ],
           })
+          .populate('keyboard_switch')
           .exec(callback);
       },
     },
     (err, results) => {
+      console.log('!!!!!');
+      console.log(results.keyboard_instances);
       if (err) {
         return next(err);
       }

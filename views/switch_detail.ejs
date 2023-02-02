@@ -17,9 +17,11 @@
     <div class="headline">
       <h1><%= keyboard_switch.display_name %></h1>
     </div>
-    <div class="description">
-      <p><%= keyboard_switch.description %></p>
-    </div>
+    <% if (keyboard_switch.description) { %>
+      <div class="description">
+        <p><%= keyboard_switch.description %></p>
+      </div>
+    <% } %>
       <% if(!switch_instances){ %>
       <p class="nothing-found">These switches aren't available on any keyboards currently.</p>
       <% } else{ %> 
@@ -27,9 +29,14 @@
         <% switch_instances.forEach((instance) => { %>
           <a href="<%= instance.url %>" class="list-link">
             <div class="list-row">
+              <div class="list-row-top">
             <li>
-            <%= instance.keyboard.brand.display_name %> <span class="strong"><%= instance.keyboard.name %></span> <span class="inline-footnote">($<%= instance.keyboard.price %>)</span>
-            </li>
+            <%= instance.keyboard.brand.display_name %> <span class="strong"><%= instance.keyboard.name %></span>
+            </div>
+            <div class="list-row-bottom">
+            <span class="inline-footnote">($<%= instance.keyboard.price %>)</span>
+            </div>
+          </li>
           </div>
           </a>
       <% }); %>

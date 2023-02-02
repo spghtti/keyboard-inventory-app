@@ -14,14 +14,19 @@
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
+    <div class="header">
     <h1><%= title %></h1>
         <p>Do you really want to delete this instance?</p>
+    </div>
         <form method="POST" action="">
             <div class="form-group">
+              <div class="detail-buttons-container">
                 <input id="keyboard_instance_id"class='form-control' type="hidden" name="keyboard_instance_id" required="true" value="<%= keyboard_instance._id %>">
-                <button class="btn btn-primary" type="submit">Delete</button>
+                <button class="delete" type="submit">Delete</button>
+              </div>
             </div>
         </form>
+        <a href="<%= keyboard_instance.url%>" class="text-link">Take me back!</a>
   </div>
 </body>
 

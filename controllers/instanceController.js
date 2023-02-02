@@ -74,21 +74,23 @@ exports.keyboardinstance_detail = (req, res, next) => {
 
 // Display Keyboardinstance create form on GET.
 exports.keyboardinstance_create_get = (req, res, next) => {
-  Keyboard.find({}, 'name').exec((err, keyboards) => {
-    if (err) {
-      return next(err);
-    }
-    KeyboardSwitch.find({}, 'display_name').exec((err, switches) => {
+  Keyboard.find({}, 'name')
+    .populate('brand')
+    .exec((err, keyboards) => {
       if (err) {
         return next(err);
       }
-      res.render('instance_form', {
-        title: 'Create New Instance',
-        keyboard_list: keyboards,
-        keyboard_switch_list: switches,
+      KeyboardSwitch.find({}, 'display_name').exec((err, switches) => {
+        if (err) {
+          return next(err);
+        }
+        res.render('instance_form', {
+          title: 'Create New Instance',
+          keyboard_list: keyboards,
+          keyboard_switch_list: switches,
+        });
       });
     });
-  });
 };
 
 // Handle Keyboardinstance create on POST.

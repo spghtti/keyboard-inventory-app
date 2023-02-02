@@ -26,7 +26,7 @@
                     <% if (locals.keyboardinstance) { %>
                     <option value="<%= keyboard._id %>" <%= (keyboard._id.toString() == locals.selected_keyboard ? 'selected' : selected="false") %> ><%= keyboard.name %></option> 
                     <% } else { %>
-                        <option value="<%= keyboard._id %>" ><%= keyboard.name %> </option> 
+                        <option value="<%= keyboard._id %>" ><%= keyboard.brand.display_name %> <%= keyboard.name %> </option> 
                     <% } %>
                     <% }) %>
             </select>

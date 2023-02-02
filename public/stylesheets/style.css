@@ -73,6 +73,7 @@ button:hover {
   flex-direction: column;
   padding: 3rem 2rem 0 2rem;
   margin-left: 175px;
+  max-width: 800px;
 }
 .sidebar {
   display: flex;
@@ -163,8 +164,8 @@ button:hover {
 .header {
   margin-bottom: 1rem;
 }
-.header * h1 {
-  overflow-wrap: anywhere;
+.header > h1 {
+  word-wrap: break-word;
 }
 .headline {
   margin-bottom: 1rem;
@@ -179,11 +180,14 @@ button:hover {
 .detail-buttons-container {
   margin-bottom: 1rem;
 }
+.detail-buttons-container * button {
+  margin-right: 0.75rem;
+}
 .detail-button {
   background-color: rgb(224, 221, 221);
 }
 .update {
-  background-color: #2ea44f;
+  background-color: #077c28;
   border: 1px solid rgba(39, 44, 50, 0.15);
   border-radius: 6px;
   box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
@@ -215,7 +219,7 @@ button:hover {
 }
 .inline-footnote {
   font-style: italic;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 .form-group {
   display: flex;
@@ -228,6 +232,7 @@ button:hover {
 textarea {
   resize: none;
   height: 5rem;
+  font: inherit;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -246,4 +251,14 @@ select {
 .nothing-found {
   color: rgb(92, 92, 92);
   font-style: italic;
+  list-style: none;
+  margin: 1rem 0;
+}
+.text-link {
+  color: rgb(92, 92, 92) !important;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+.text-link:hover {
+  text-decoration-line: underline;
 }
