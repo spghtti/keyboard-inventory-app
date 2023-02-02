@@ -234,6 +234,9 @@ textarea {
   height: 5rem;
   font: inherit;
 }
+input {
+  font: inherit;
+}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -261,4 +264,9 @@ select {
 }
 .text-link:hover {
   text-decoration-line: underline;
+}
+.date-sold-container {
+  display: flex;
+  flex-direction: column;
+  display: none;
 }

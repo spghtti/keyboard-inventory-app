@@ -59,6 +59,7 @@ exports.keyboardinstance_detail = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+      console.log(keyboardinstance);
       res.render('instance_detail', {
         title: `Keyboard: ${keyboardinstance.keyboard.name}`,
         keyboardinstance,
@@ -77,10 +78,17 @@ exports.keyboardinstance_create_get = (req, res, next) => {
         if (err) {
           return next(err);
         }
+        let today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+
         res.render('instance_form', {
           title: 'Create New Instance',
           keyboard_list: keyboards,
           keyboard_switch_list: switches,
+          today,
         });
       });
     });
@@ -117,10 +125,18 @@ exports.keyboardinstance_create_post = [
           if (err) {
             return next(err);
           }
+
+          let today = new Date();
+          const dd = String(today.getDate()).padStart(2, '0');
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const yyyy = today.getFullYear();
+          today = yyyy + '-' + mm + '-' + dd;
+
           res.render('instance_form', {
             title: 'Create New Instance',
             keyboard_list: keyboards,
             selected_keyboard: keyboardinstance.keyboard._id.toString(),
+            today,
             selected_switch: keyboardinstance.switch._id.toString(),
             keyboard_switch_list: switches,
             errors: errors.array(),
@@ -211,12 +227,20 @@ exports.keyboardinstance_update_get = (req, res, next) => {
         err.status = 404;
         return next(err);
       }
+
+      let today = new Date();
+      const dd = String(today.getDate()).padStart(2, '0');
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const yyyy = today.getFullYear();
+      today = yyyy + '-' + mm + '-' + dd;
+
       res.render('instance_form', {
         title: 'Update Instance',
         keyboardinstance: results.keyboard_instance,
         keyboard_list: results.keyboards,
         keyboard_switch_list: results.switches,
         selected_keyboard: results.keyboard_instance.keyboard._id.toString(),
+        today,
         selected_switch:
           results.keyboard_instance.keyboard_switch._id.toString(),
       });
@@ -238,7 +262,16 @@ exports.keyboardinstance_update_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
-    const date_sold = req.body.status !== 'Sold' ? '' : req.body.date_sold;
+    let date_sold = req.body.date_sold;
+
+    if (req.body.status === 'Sold') {
+      let str = [...req.body.date_sold.toISOString()];
+      let offsetHours = date_sold.getTimezoneOffset() / 60;
+      str[str.indexOf('T') + 2] = String(offsetHours);
+      date_sold = str.join('');
+    } else {
+      date_sold = '';
+    }
 
     const keyboardinstance = new KeyboardInstance({
       keyboard: req.body.keyboard,
@@ -268,9 +301,17 @@ exports.keyboardinstance_update_post = [
           if (err) {
             return next(err);
           }
+
+          let today = new Date();
+          const dd = String(today.getDate()).padStart(2, '0');
+          const mm = String(today.getMonth() + 1).padStart(2, '0');
+          const yyyy = today.getFullYear();
+          today = yyyy + '-' + mm + '-' + dd;
+
           res.render('instance_form', {
             title: 'Update Instance',
             keyboardinstance,
+            today,
             keyboard_list: results.keyboards,
             keyboard_switch_list: results.switches,
             selected_keyboard:
@@ -283,7 +324,6 @@ exports.keyboardinstance_update_post = [
       );
       return;
     }
-
     KeyboardInstance.findByIdAndUpdate(
       req.params.id,
       keyboardinstance,

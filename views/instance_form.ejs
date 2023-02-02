@@ -44,7 +44,7 @@
                     <% }) %>
             </select>
             <label for="status">Status:</label>
-            <select id="status" class="form-control" placeholder="Select status" name="status" required="true">
+            <select id="status" class="form-control" placeholder="Select status" name="status" required="true" onchange='checkForSold()'>
             <% if (locals.keyboardinstance) { %>
                 <option value="In-stock" <%= (keyboardinstance.status === 'In-stock' ? 'selected' : selected="false") %> >In-stock</option>
                 <option value="Returned" <%= (keyboardinstance.status === 'Returned' ? 'selected' : selected="false") %>>Returned</option>
@@ -55,14 +55,14 @@
                     <option value="Sold">Sold</option>
                 <% } %>
             </select>
+            <div class="date-sold-container">
+            <label for="date_sold">Date sold:</label>
             <% if (locals.keyboardinstance) { %>
-                <label for="date_sold">Date when sold:</label>
-                <% if (locals.keyboardinstance.date_sold) { %>
-                      <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : ''%>" %>">
-                    <% } else { %>
-                        <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= keyboardinstance.date_sold %>">
-                    <% } %>
+                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : today %>">
+            <% } else { %>
+                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= today %>">
             <% } %>
+        </div>
         </div>
         <button class="update" type="submit">Submit</button>
         <% if(locals.errors) { %>
@@ -74,6 +74,6 @@
             <% } %>
     </form>
   </div>
+  <script src="/javascripts/date.js"></script>
 </body>
-
 </html>

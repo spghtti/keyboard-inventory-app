@@ -28,7 +28,7 @@ KeyboardInstanceSchema.virtual('date_sold_formatted').get(function () {
 });
 
 KeyboardInstanceSchema.virtual('date_sold_year_first').get(function () {
-  return DateTime.fromJSDate(this.date_sold).toISODate().toString();
+  return DateTime.fromJSDate(this.date_sold).toISODate();
 });
 
 // Export modelS
