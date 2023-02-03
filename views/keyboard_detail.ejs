@@ -24,12 +24,14 @@
     <div class="description">
       <% if(keyboard.description !== 'false'){ %>
       <p><%= keyboard.description %></p>
-      <% } %>
+      <% } %> 
     </div>
     <% if (keyboard.image.data) { %>
-      <img class="keybard-image" src="data:image/<%=keyboard.image.contentType%>;base64,
+      <div class="keyboard-image-container">
+      <img class="keyboard-image" src="data:image/<%=keyboard.image.contentType%>;base64,
       <%=locals.keyboard.image.data.toString('base64')%>">
-      <% }  %> 
+      <% }  %>
+    </div>
     <div class="detail-buttons-container">
       <a href="<%= keyboard.url + '/update' %> "><button class="update detail-button">Update</button></a>
       <a href="<%= keyboard.url + '/delete' %> "><button class="delete detail-button">Delete</p></button></a>
