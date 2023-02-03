@@ -16,5 +16,4 @@ KeyboardSwitchSchema.virtual('lowercase-name').get(function () {
   return this.name.toLowerCase();
 });
 
-// Export model
 module.exports = mongoose.model('KeyboardSwitch', KeyboardSwitchSchema);

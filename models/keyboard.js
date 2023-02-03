@@ -12,9 +12,10 @@ const KeyboardSchema = new Schema({
   },
   description: { type: String, maxLength: 500 },
   price: { type: Number, min: 1, required: true },
-  switches: [
-    { type: Schema.Types.ObjectId, ref: 'KeyboardSwitch', required: true },
-  ],
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 KeyboardSchema.virtual('url').get(function () {

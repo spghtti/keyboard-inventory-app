@@ -13,5 +13,4 @@ BrandSchema.virtual('url').get(function () {
   return `/inventory/brand/${this._id}`;
 });
 
-// Export model
 module.exports = mongoose.model('Brand', BrandSchema);

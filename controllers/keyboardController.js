@@ -4,8 +4,11 @@ const KeyboardInstance = require('../models/keyboardinstance');
 const Switch = require('../models/keyboardswitch');
 
 const async = require('async');
-
 const { body, validationResult } = require('express-validator');
+
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 exports.index = (req, res) => {
   async.parallel(
@@ -109,7 +112,11 @@ exports.keyboard_create_get = (req, res, next) => {
   );
 };
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 exports.keyboard_create_post = [
+  upload.single('image'),
   body('name', 'Name must be 3-100 characters.')
     .trim()
     .isLength({ min: 3, max: 100 })
@@ -137,6 +144,10 @@ exports.keyboard_create_post = [
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
+      image: {
+        data: req.file.buffer,
+        contentType: 'image/png',
+      },
     });
 
     if (!errors.isEmpty()) {

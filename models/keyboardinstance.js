@@ -31,5 +31,4 @@ KeyboardInstanceSchema.virtual('date_sold_year_first').get(function () {
   return DateTime.fromJSDate(this.date_sold).toISODate();
 });
 
-// Export modelS
 module.exports = mongoose.model('KeyboardInstance', KeyboardInstanceSchema);
