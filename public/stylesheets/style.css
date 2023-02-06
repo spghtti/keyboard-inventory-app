@@ -28,6 +28,7 @@ html {
   background-color: rgb(236, 236, 236);
   font-size: 16px;
   font-family: 'Roboto', Calibri, Tahoma, sans-serif;
+  width: 100vw;
 }
 h1 {
   font-size: 2rem;
@@ -41,6 +42,7 @@ h3 {
   font-size: 1.25rem;
   font-family: 'Ubuntu', Calibri, Tahoma, sans-serif;
 }
+
 a,
 a:visited {
   color: black;
@@ -275,4 +277,41 @@ select {
   display: flex;
   flex-direction: column;
   display: none;
+}
+@media (max-width: 500px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .wrapper {
+    margin: 0;
+    min-width: 290px;
+    overflow-x: hidden;
+    padding: 2rem 1rem;
+  }
+  .logo {
+    width: 100%;
+  }
+  .logo-container {
+    padding-bottom: 0.5rem;
+  }
+  .sidebar {
+    width: 100%;
+    overflow: visible;
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow-x: hidden;
+  }
+  .sidebar-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0;
+    flex: 1;
+  }
 }

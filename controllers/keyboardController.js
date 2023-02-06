@@ -146,7 +146,6 @@ exports.keyboard_create_post = [
 
     if (req.file) {
       if (validFiles.indexOf(req.file.mimetype) !== -1) {
-        console.log('image passes');
         image = {
           data: req.file.buffer,
           contentType: 'image/png',
@@ -337,7 +336,6 @@ exports.keyboard_update_post = [
 
     if (req.file) {
       if (validFiles.indexOf(req.file.mimetype) !== -1) {
-        console.log('image passes');
         image = {
           data: req.file.buffer,
           contentType: 'image/png',
