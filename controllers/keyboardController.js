@@ -140,20 +140,20 @@ exports.keyboard_create_post = [
     const errors = validationResult(req);
 
     let image = null;
-    console.log(req.file.mimetype);
 
     const validFiles = ['image/png', 'image/jpeg', 'image/jpg'];
-    let fileError = null;
+    let fileError = { msg: '' };
 
-    if (validFiles.indexOf(req.file.mimetype) !== -1) {
-      console.log('image passes');
-      image = {
-        data: req.file.buffer,
-        contentType: 'image/png',
-      };
-    }
-    if (req.file && validFiles.indexOf(req.file.mimetype) === -1) {
-      fileError = { msg: 'Image must be a png, jpg, or jpeg' };
+    if (req.file) {
+      if (validFiles.indexOf(req.file.mimetype) !== -1) {
+        console.log('image passes');
+        image = {
+          data: req.file.buffer,
+          contentType: 'image/png',
+        };
+      } else {
+        fileError = { msg: 'Image must be a png, jpg, or jpeg' };
+      }
     }
 
     const keyboard = new Keyboard({
