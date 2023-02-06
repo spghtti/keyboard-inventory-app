@@ -7,7 +7,7 @@ const KeyboardSchema = new Schema({
   brand: {
     type: Schema.Types.ObjectId,
     ref: 'Brand',
-    minLength: 3,
+    minLength: 1,
     required: true,
   },
   description: { type: String, maxLength: 500 },

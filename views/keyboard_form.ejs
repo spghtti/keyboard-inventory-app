@@ -18,16 +18,18 @@
     <form method="POST" action="" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" class="form-control" name="name" value="<%= locals.keyboard === undefined ? '' : keyboard.name %>" >
+            <input type="text" id="name" class="form-control" name="name" value="<%= locals.keyboard === undefined ? '' : keyboard.name %>" autocomplete="off">
             <label for="brand">Brand:</label>
             <select id="brand" class="form-control" name="brand" required autocomplete="off">
-              <% if (!locals.keyboard) { %>
+              <% if (!locals.keyboard) { %> 
                 <option value="" selected disabled>Select a brand</option>
               <% } %>
-              <% locals.brands.forEach((brand) => {  %>
-                <% if (locals.keyboard) { %> 
-                <option value="<%= brand._id %>" <%= (brand._id.toString() === locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> ><%= brand.display_name %> </option> 
-                <% } else { %>
+              <% brands.forEach((brand) => {  %>
+                <% if (locals.keyboard) { %>
+                <% if (brand) { %>
+                  <option value="<%=brand._id%>" <%= (brand._id.toString() == locals.keyboard.brand._id.toString() ? 'selected' : selected="false") %> ><%= brand.display_name %></option> 
+                    <% } %>
+                    <% } else { %>
                     <option value="<%= brand._id %> "><%= brand.display_name %></option> 
                     <% } %>
                 <% })  %>
@@ -40,11 +42,10 @@
       <div>
         <label for="image">Upload Image</label>
         <input type="file" id="image"
-               name="image" value="">
+               name="image" value="" accept=".jpg, .jpeg, .png" >
               </div>
       <button class="update" type="submit">Submit</button>
 
-        </div>
         <% if( locals.errors) { %>
             <ul>
                 <% errors.forEach((error) => { %>
@@ -52,6 +53,7 @@
                     <% }); %>
             </ul> 
             <% } %>
+        </div>
     </form>
   </div>
 </body>

@@ -139,15 +139,20 @@ exports.keyboard_create_post = [
   (req, res, next) => {
     const errors = validationResult(req);
 
+    let image = null;
+    if (req.file) {
+      image = {
+        data: req.file.buffer,
+        contentType: 'image/png',
+      };
+    }
+
     const keyboard = new Keyboard({
       name: req.body.name,
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
-      image: {
-        data: req.file.buffer,
-        contentType: 'image/png',
-      },
+      image,
     });
 
     if (!errors.isEmpty()) {
@@ -312,7 +317,6 @@ exports.keyboard_update_post = [
     .isInt({ min: 1 })
     .withMessage('Price must be at least $1')
     .escape(),
-
   (req, res, next) => {
     const errors = validationResult(req);
 
@@ -321,6 +325,10 @@ exports.keyboard_update_post = [
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
+      // image: {
+      //   data: req.file.buffer,
+      //   contentType: 'image/jpeg',
+      // },
       _id: req.params.id,
     });
 
