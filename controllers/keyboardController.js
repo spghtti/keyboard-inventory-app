@@ -177,7 +177,6 @@ exports.keyboard_create_post = [
           }
           const errorsArr = errors.array();
           errorsArr.push(fileError);
-          console.log(errorsArr);
           res.render('keyboard_form', {
             title: 'Create New Keyboard',
             brands: results.brands,
@@ -262,7 +261,6 @@ exports.keyboard_delete_post = (req, res, next) => {
       if (err) {
         return next(err);
       }
-      // Success
       if (results.keyboard_instances.length > 0) {
         res.render('switch_delete', {
           title: 'Delete a Switch',
@@ -310,6 +308,7 @@ exports.keyboard_update_get = (req, res, next) => {
 };
 
 exports.keyboard_update_post = [
+  upload.single('image'),
   body('name', 'Name must be 3-100 characters.')
     .trim()
     .isLength({ min: 3, max: 100 })
@@ -331,16 +330,29 @@ exports.keyboard_update_post = [
     .escape(),
   (req, res, next) => {
     const errors = validationResult(req);
+    let image = null;
+
+    const validFiles = ['image/png', 'image/jpeg', 'image/jpg'];
+    let fileError = { msg: '' };
+
+    if (req.file) {
+      if (validFiles.indexOf(req.file.mimetype) !== -1) {
+        console.log('image passes');
+        image = {
+          data: req.file.buffer,
+          contentType: 'image/png',
+        };
+      } else {
+        fileError = { msg: 'Image must be a png, jpg, or jpeg' };
+      }
+    }
 
     const keyboard = new Keyboard({
       name: req.body.name,
       brand: req.body.brand,
       description: req.body.description,
       price: req.body.price,
-      // image: {
-      //   data: req.file.buffer,
-      //   contentType: 'image/jpeg',
-      // },
+      image,
       _id: req.params.id,
     });
 
@@ -355,6 +367,8 @@ exports.keyboard_update_post = [
           if (err) {
             return next(err);
           }
+          const errorsArr = errors.array();
+          errorsArr.push(fileError);
           res.render('keyboard_form', {
             title: 'Update Keyboard',
             brands: results.brands,

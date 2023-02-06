@@ -17,7 +17,7 @@
     <h1 class="header"><%= title %></h1>
     <form method="POST" action="">
         <div class="form-group">
-            <label for="name">Keyboard:</label>
+            <label for="name">Keyboard*:</label>
             <select id='book' class='form-control' placeholder="Select a keyboard" name="keyboard" required="true">
                 <% if (!locals.keyboardinstance) { %>
                     <option value="" selected disabled>Select a keyboard</option>
@@ -30,7 +30,7 @@
                     <% } %>
                     <% }) %>
             </select>
-            <label for="keyboard_switch">Switch:</label>
+            <label for="keyboard_switch">Switch*:</label>
             <select id='keyboard_switch' class='form-control' name="keyboard_switch" required="true">
                 <% if (!locals.keyboardinstance) { %>
                 <option value="" selected disabled>Select a switch</option>
@@ -43,7 +43,7 @@
                     <% } %>
                     <% }) %>
             </select>
-            <label for="status">Status:</label>
+            <label for="status">Status*:</label>
             <select id="status" class="form-control" placeholder="Select status" name="status" required="true" onchange='checkForSold()'>
             <% if (locals.keyboardinstance) { %>
                 <option value="In-stock" <%= (keyboardinstance.status === 'In-stock' ? 'selected' : selected="false") %> >In-stock</option>
