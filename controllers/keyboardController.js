@@ -140,11 +140,20 @@ exports.keyboard_create_post = [
     const errors = validationResult(req);
 
     let image = null;
-    if (req.file) {
+    console.log(req.file.mimetype);
+
+    const validFiles = ['image/png', 'image/jpeg', 'image/jpg'];
+    let fileError = null;
+
+    if (validFiles.indexOf(req.file.mimetype) !== -1) {
+      console.log('image passes');
       image = {
         data: req.file.buffer,
         contentType: 'image/png',
       };
+    }
+    if (req.file && validFiles.indexOf(req.file.mimetype) === -1) {
+      fileError = { msg: 'Image must be a png, jpg, or jpeg' };
     }
 
     const keyboard = new Keyboard({
@@ -166,11 +175,14 @@ exports.keyboard_create_post = [
           if (err) {
             return next(err);
           }
+          const errorsArr = errors.array();
+          errorsArr.push(fileError);
+          console.log(errorsArr);
           res.render('keyboard_form', {
             title: 'Create New Keyboard',
             brands: results.brands,
             keyboard,
-            errors: errors.array(),
+            errors: errorsArr,
           });
         }
       );
