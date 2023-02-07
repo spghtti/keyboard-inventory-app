@@ -1,17 +1,5 @@
-#! /usr/bin/env node
-
-// console.log(
-//   'This script populates some test books, authors, genres and bookinstances to your database. Specified database as argument - e.g.: populatedb mongodb+srv://cooluser:coolpassword@cluster0.a9azn.mongodb.net/local_library?retryWrites=true'
-// );
-
-// Get arguments passed on command line
 var userArgs = process.argv.slice(2);
-/*
-if (!userArgs[0].startsWith('mongodb')) {
-    console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
-    return
-}
-*/
+
 var async = require('async');
 var Brand = require('./models/brand');
 var Keyboard = require('./models/keyboard');
@@ -151,7 +139,6 @@ function createSwitchesBrands(cb) {
         switchCreate('Cherry MX Blue', 'cherry mx blue', false, callback);
       },
     ],
-    // optional callback
     cb
   );
 }
@@ -220,7 +207,6 @@ function createKeyboards(cb) {
         );
       },
     ],
-    // optional callback
     cb
   );
 }
@@ -328,21 +314,18 @@ function createKeyboardInstances(cb) {
         );
       },
     ],
-    // Optional callback
     cb
   );
 }
 
 async.series(
   [createSwitchesBrands, createKeyboards, createKeyboardInstances],
-  // Optional callback
   function (err, results) {
     if (err) {
       console.log('FINAL ERR: ' + err);
     } else {
       console.log('KEYBOARDInstances: ' + keyboardinstances);
     }
-    // All done, disconnect from database
     mongoose.connection.close();
   }
 );
