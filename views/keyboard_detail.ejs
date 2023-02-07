@@ -7,23 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
 </head>
 
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div class="header">
-      <h1><%= keyboard.brand.display_name %> <span class="strong"><%= keyboard.name %> </span>
+      <h1><%- keyboard.brand.display_name %> <span class="strong"><%- keyboard.name %> </span>
       </h1>
         <% if(keyboard.price !== 'false'){ %>
-        <p class="headline-footnote">$<%= keyboard.price %></p>
+        <p class="headline-footnote">$<%- keyboard.price %></p>
         <% } %>
     </div>
     <div class="description">
       <% if(keyboard.description !== 'false'){ %>
-      <p><%= keyboard.description %></p>
+      <p><%- keyboard.description %></p>
       <% } %> 
     </div>
     <% if (keyboard.image.data) { %>
@@ -44,7 +44,7 @@
               <a href="<%= instance.keyboard_switch.url %>" class="list-link">
               <div class="list-row">
               <li>
-               <span class="strong"><%= instance.keyboard_switch.display_name %></span>
+               <span class="strong"><%- instance.keyboard_switch.display_name %></span>
               </li>
             </div>
           </a>
@@ -67,10 +67,10 @@
             <div class="list-row">
             <li>
               <div class="list-row-top">
-                <span class="strong"><%= instance.keyboard.name %></span> (<%= instance.keyboard_switch.display_name %>)
+                <span class="strong"><%- instance.keyboard.name %></span> (<%- instance.keyboard_switch.display_name %>)
               </div>
               <div class="list-row-bottom">
-                <span class="inline-footnote">ID: <%= instance._id %></span>
+                <span class="inline-footnote">ID: <%- instance._id %></span>
                </div>
             </li>
             </div>

@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%= title %></title>
 </head>
 
 <body>
@@ -17,12 +17,12 @@
     <div class="header">
       <h1><%=brand.display_name %></h1>
       <% if(brand.origin !== 'false'){ %>
-      <p class="headline-footnote"><%= brand.origin %></p>
+      <p class="headline-footnote"><%- brand.origin %></p>
       <% } %>
     </div>
     <div>
       <% if(brand.description){ %>
-      <p class="description"><%= brand.description %></p>
+      <p class="description"><%- brand.description %></p>
       <% } %>
     </div>
     <div class="detail-buttons-container">
@@ -39,8 +39,8 @@
           <div class="list-row">
             <li>
               <div class="list-top-row">
-               <span class="strong"><%= keyboard.name %></span> 
-              </div><span class="inline-footnote">($<%= keyboard.price %>)</span>
+               <span class="strong"><%- keyboard.name %></span> 
+              </div><span class="inline-footnote">($<%- keyboard.price %>)</span>
             </li>
           </div>
         </a>

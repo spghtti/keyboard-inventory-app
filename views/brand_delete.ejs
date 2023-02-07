@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%= title %></title>
 </head>
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div class="header">
-    <h1><%= title %></h1>
+    <h1><%- title %></h1>
     <% if (locals.brand_keyboards.length) { %>
     <p class="error">You must delete a brand's keyboards before deleting the brand.</p>
     </div>
@@ -24,7 +24,7 @@
             <% brand_keyboards.forEach((keyboard) => { %> 
                 <a href="<%= keyboard.url %>" class="list-link">
                 <div class="list-row">
-                <span class="strong"><li><%= keyboard.name %></li></span>
+                <span class="strong"><li><%- keyboard.name %></li></span>
                 </div>
                 </a>
             <% })  %> 
@@ -35,7 +35,7 @@
         <form method="POST" action="">
             <div class="form-group">
                 <div class="detail-buttons-container">
-                <input id="brandid"class='form-control' type="hidden" name="brandid" required="true" value="<%= brand._id %>">
+                <input id="brandid"class='form-control' type="hidden" name="brandid" required="true" value="<%- brand._id %>">
                 <button class="delete" type="submit">Delete</button>
                 </div>
             </div>

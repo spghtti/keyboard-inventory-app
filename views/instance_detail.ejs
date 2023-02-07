@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%= title %></title>
 </head>
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div class="header">
-      <h1>Instance: <%=keyboardinstance._id %></h1>
+      <h1>Instance: <%-keyboardinstance._id %></h1>
     </div>
     <ul>
       <a href="<%= keyboardinstance.keyboard.url %>" class="list-link">
@@ -24,25 +24,25 @@
       </a>
       <a href="<%= keyboardinstance.keyboard_switch.url %>" class="list-link">
       <div class="list-row">
-         <li><span class="strong">Switch:</span> <%= keyboardinstance.keyboard_switch.display_name %></li>
+         <li><span class="strong">Switch:</span> <%- keyboardinstance.keyboard_switch.display_name %></li>
          </div>
         </a>
         <div class="list-row inactive">
           <li><span class="strong">Status:</span>
             <% if (keyboardinstance.status === 'In-stock') { %> 
-              <span class="instance-status in-stock"><%= keyboardinstance.status %></span>
+              <span class="instance-status in-stock"><%- keyboardinstance.status %></span>
               <% } %> 
               <% if (keyboardinstance.status === 'Returned') { %> 
-                <span class="instance-status returned"><%= keyboardinstance.status %></span>
+                <span class="instance-status returned"><%- keyboardinstance.status %></span>
               <% } %> 
               <% if (keyboardinstance.status === 'Sold') { %> 
-                <span class="instance-status sold"><%= keyboardinstance.status %></span>
+                <span class="instance-status sold"><%- keyboardinstance.status %></span>
               <% } %> 
           </li>
           </div>
           <% if (keyboardinstance.date_sold) { %> 
           <div class="list-row inactive">
-          <li><span class="strong">Date sold:</span> <%= keyboardinstance.date_sold_formatted %>
+          <li><span class="strong">Date sold:</span> <%- keyboardinstance.date_sold_formatted %>
           </li>
           </div>
           <% } %>

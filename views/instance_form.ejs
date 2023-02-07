@@ -7,14 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
 </head>
-<!-- BUG: Need to only show switches available for that keyboard -->
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <h1 class="header"><%= title %></h1>
+    <h1 class="header"><%- title %></h1>
     <form method="POST" action="">
         <div class="form-group">
             <label for="name">Keyboard*:</label>
@@ -24,9 +23,9 @@
                     <% } %>
                 <% keyboard_list.forEach((keyboard) => {  %>
                     <% if (locals.keyboardinstance) { %>
-                    <option value="<%= keyboard._id %>" <%= (keyboard._id.toString() == locals.selected_keyboard ? 'selected' : selected="false") %> ><%= keyboard.name %></option> 
+                    <option value="<%- keyboard._id %>" <%- (keyboard._id.toString() == locals.selected_keyboard ? 'selected' : selected="false") %> ><%- keyboard.name %></option> 
                     <% } else { %>
-                        <option value="<%= keyboard._id %>" ><%= keyboard.brand.display_name %> <%= keyboard.name %> </option> 
+                        <option value="<%- keyboard._id %>" ><%- keyboard.brand.display_name %> <%- keyboard.name %> </option> 
                     <% } %>
                     <% }) %>
             </select>
@@ -37,18 +36,18 @@
                 <% } %>
                 <% keyboard_switch_list.forEach((keyboard_switch) => {  %>
                     <% if (locals.keyboardinstance) { %>
-                    <option value="<%= keyboard_switch._id %>" <%= (keyboard_switch._id.toString() === locals.selected_switch ? 'selected' : selected="false") %> ><%= keyboard_switch.display_name %></option> 
+                    <option value="<%- keyboard_switch._id %>" <%- (keyboard_switch._id.toString() === locals.selected_switch ? 'selected' : selected="false") %> ><%- keyboard_switch.display_name %></option> 
                     <% } else { %>
-                        <option value="<%= keyboard_switch._id %>" ><%= keyboard_switch.display_name %> </option> 
+                        <option value="<%- keyboard_switch._id %>" ><%- keyboard_switch.display_name %> </option> 
                     <% } %>
                     <% }) %>
             </select>
             <label for="status">Status*:</label>
             <select id="status" class="form-control" placeholder="Select status" name="status" required="true" onchange='checkForSold()'>
             <% if (locals.keyboardinstance) { %>
-                <option value="In-stock" <%= (keyboardinstance.status === 'In-stock' ? 'selected' : selected="false") %> >In-stock</option>
-                <option value="Returned" <%= (keyboardinstance.status === 'Returned' ? 'selected' : selected="false") %>>Returned</option>
-                <option value="Sold" <%= (keyboardinstance.status === 'Sold' ? 'selected' : selected="false") %>>Sold</option>
+                <option value="In-stock" <%- (keyboardinstance.status === 'In-stock' ? 'selected' : selected="false") %> >In-stock</option>
+                <option value="Returned" <%- (keyboardinstance.status === 'Returned' ? 'selected' : selected="false") %>>Returned</option>
+                <option value="Sold" <%- (keyboardinstance.status === 'Sold' ? 'selected' : selected="false") %>>Sold</option>
                 <% } else { %>
                     <option value="In-stock">In-stock</option>
                     <option value="Returned">Returned</option>
@@ -58,9 +57,9 @@
             <div class="date-sold-container">
             <label for="date_sold">Date sold:</label>
             <% if (locals.keyboardinstance) { %>
-                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : today %>">
+                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%- locals.keyboardinstance.date_sold ? locals.keyboardinstance.date_sold_year_first : today %>">
             <% } else { %>
-                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%= today %>">
+                <input id='date_sold' class='form-control' type="date" name="date_sold" value="<%- today %>">
             <% } %>
         </div>
         </div>

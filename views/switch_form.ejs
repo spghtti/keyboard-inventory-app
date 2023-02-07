@@ -7,20 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
 </head>
 
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
-    <h1 class="header"><%= title %></h1>
+    <h1 class="header"><%- title %></h1>
     <form method="POST" action="">
         <div class="form-group">
             <label for="name">Name*:</label>
-            <input type="text" id="name" class="form-control" name="name" value="<%= locals.keyboard_switch === undefined ? '' : keyboard_switch.name %>" >
+            <input type="text" id="name" class="form-control" name="name" value="<%-locals.keyboard_switch === undefined ? '' : keyboard_switch.name %>" >
             <label for="description">Description:</label>
-            <textarea type="text" id="description" class="form-control" name="description" ><%= locals.keyboard_switch === undefined ? '' : keyboard_switch.description  %></textarea>
+            <textarea type="text" id="description" class="form-control" name="description" ><%- locals.keyboard_switch === undefined ? '' : keyboard_switch.description  %></textarea>
         </div>
         <button class="update" type="submit">Submit</button>
         <% if(locals.errors) { %>

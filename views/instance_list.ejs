@@ -7,15 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
 </head>
 
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div>
-      <h1><%= title %></h1>
+      <h1><%- title %></h1>
     </div>
       <% if(!keyboardinstance_list){ %>
       <p>No instances available</p>
@@ -26,19 +26,19 @@
       <div class="list-row">
       <li>
         <div class="list-row-top">
-        <span><%= instance.keyboard.brand.display_name %></span> <span class="strong"><%= instance.keyboard.name %></span>
+        <span><%- instance.keyboard.brand.display_name %></span> <span class="strong"><%- instance.keyboard.name %></span>
         <% if (instance.status === 'In-stock') { %> 
-        <span class="instance-status in-stock"><%= instance.status %></span>
+        <span class="instance-status in-stock"><%- instance.status %></span>
         <% } %> 
         <% if (instance.status === 'Returned') { %> 
-          <span class="instance-status returned"><%= instance.status %></span>
+          <span class="instance-status returned"><%- instance.status %></span>
         <% } %> 
         <% if (instance.status === 'Sold') { %> 
-          <span class="instance-status sold"><%= instance.status %></span>
+          <span class="instance-status sold"><%- instance.status %></span>
         <% } %> 
         </div>
         <div class="list-row-bottom">
-        <span class="inline-footnote">(ID: <%= instance._id %>) </span>
+        <span class="inline-footnote">(ID: <%- instance._id %>) </span>
         </div>
       </li>
     </div>

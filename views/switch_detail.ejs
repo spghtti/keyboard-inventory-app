@@ -7,19 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/stylesheets/reset.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link rel="shortcut icon" href="#" />
-  <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
 </head>
 
 <body>
   <%- include('sidebar') -%>
   <div class="wrapper">
     <div class="headline">
-      <h1><%= keyboard_switch.display_name %></h1>
+      <h1><%- keyboard_switch.display_name %></h1>
     </div>
     <% if (keyboard_switch.description) { %>
       <div class="description">
-        <p><%= keyboard_switch.description %></p>
+        <p><%- keyboard_switch.description %></p>
       </div>
     <% } %>
       <% if(!switch_instances){ %>
@@ -31,10 +31,10 @@
             <div class="list-row">
               <div class="list-row-top">
             <li>
-            <%= instance.keyboard.brand.display_name %> <span class="strong"><%= instance.keyboard.name %></span>
+            <%- instance.keyboard.brand.display_name %> <span class="strong"><%- instance.keyboard.name %></span>
             </div>
             <div class="list-row-bottom">
-            <span class="inline-footnote">($<%= instance.keyboard.price %>)</span>
+            <span class="inline-footnote">($<%- instance.keyboard.price %>)</span>
             </div>
           </li>
           </div>

@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/reset.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <link rel="shortcut icon" href="#" />
-    <title><%= title %></title>
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
+    <title><%- title %></title>
   </head>
   <body>
     <%- include('sidebar') -%>
     <div class="wrapper">
-      <div><h1><%= title %></h1></div>
+      <div><h1><%- title %></h1></div>
         <% if(!keyboard_list){ %>
         <p>No keyboards available</p>
         <% } else{ %>
@@ -21,8 +21,8 @@
             <a href="<%= keyboard.url %>" class="list-link">
             <div class="list-row">
             <li>
-              <span><%= keyboard.brand.display_name %></span> 
-              <span class="strong"><%= keyboard.name %></span>
+              <span><%- keyboard.brand.display_name %></span> 
+              <span class="strong"><%- keyboard.name %></span>
             </li>
           </div>
         </a>

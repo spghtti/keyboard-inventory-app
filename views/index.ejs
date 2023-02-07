@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/reset.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <script src="/javascripts/index.js" defer></script>
-    <link rel="shortcut icon" href="#" />
+    <link rel="shortcut icon" href="/images/favicon-16x16.png" />
     <title><%= title %></title>
   </head>
   <body>
@@ -15,13 +14,10 @@
     <div class="wrapper">
         <div class="header">
           <div class="headline">
-            <h1 class="strong"><%= title %></h1>
+            <h1 class="strong"><%- title %></h1>
           </div>
         <p>
-          This is a CRUD app for a fictional keyboard store used to track inventory. You can see what's in-stock; find info about brands, boards, or switches; mark keyboards as sold; and more. 
-          <br>
-          <br>
-          It's built with Mongo, Node, Express, and EJS. 
+          This is a  CRUD app for a fictional keyboard store to track its inventory. You can see what's in-stock; find info about brands, boards, or switches; mark keyboards as sold; upload photos; and more. 
         </p>
         </div>
       <% if(error){ %>
