@@ -8,10 +8,11 @@ This is a solution to the Odin's Project's [assignment](https://www.theodinproje
 
 ## Features
 
-- Look up information keyboards, brands, switches, and instances that are in the database.
-- Add, update and delete inventory items and profiles. Deletion is only allowed if there's no associated objects.
-- View a breakdown of current inventory and profiles in the database.
-- Upload keyboard images to their profiles
+- Create and update profiles of keyboards, brands, and switches.
+- Upload keyboard images to their profiles.
+- Create and update instances. You can mark them as in-stock, sold (with date), or returned.
+- Delete inventory items and profiles. Deletion is only allowed if there's no associated objects (e.g. a switch cannot be deleted until there are no instances that use it)
+- Retrieve a list of all items in the database. You may also view a breakdown of the total counts of inventory and profiles in the database.
 
 ## Live project demo
 
