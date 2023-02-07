@@ -46,9 +46,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-// app.post('/inventory', upload.single('image'), function (req, res, next) {
-//   console.log('TEST');
-//   console.log(req.body);
-// });
-
 module.exports = app;

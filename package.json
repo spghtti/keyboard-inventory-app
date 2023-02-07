@@ -7,6 +7,9 @@
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=express-keyboard-inventory-app:* npm run devstart"
   },
+  "engines": {
+    "node": ">=16.14.2"
+  },
   "dependencies": {
     "async": "^3.2.4",
     "compression": "^1.7.4",
