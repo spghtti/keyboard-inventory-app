@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var inventoryRouter = require('./routes/inventory');
+var compression = require('compression');
+var helmet = require('helmet');
 
 require('dotenv').config('.env');
 
@@ -18,26 +20,6 @@ mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// const multer = require('multer');
-// const fs = require('fs');
-
-// const storage = multer.memoryStorage();
-// const upload = multer({
-//   storage: storage,
-//   fileFilter: (req, file, cb) => {
-//     if (
-//       file.mimetype == 'image/png' ||
-//       file.mimetype == 'image/jpg' ||
-//       file.mimetype == 'image/jpeg'
-//     ) {
-//       cb(null, true);
-//     } else {
-//       cb(null, false);
-//       return cb(new Error('Only .png, .jpg and .jpeg format allowed'));
-//     }
-//   },
-// });
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -46,6 +28,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression());
+app.use(helmet());
 
 app.use('/', indexRouter);
 app.use('/inventory', inventoryRouter);
