@@ -2,7 +2,7 @@
 
 ## About this project
 
-A CRUD application to track a (fictional) keyboard store's inventory.
+A CRUD application to track a (fictional) mechanical keyboard store's inventory.
 
 This is a solution to the Odin's Project's [assignment](https://www.theodinproject.com/lessons/nodejs-inventory-application) to build an inventory application with Node and MongoDB.
 
